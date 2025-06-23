@@ -44,6 +44,12 @@ def readline(line):
         print("line not found")
 
 
+def readcolumn(column):
+    cursor.execute(f"""SELECT {column} FROM mdp""")
+    resultats = [line[0] for line in cursor.fetchall()]
+    return resultats
+
+
 def get_id_with_name(name):
     cursor.execute("""SELECT id FROM mdp WHERE name = ?""", (name,))
     conn.commit()

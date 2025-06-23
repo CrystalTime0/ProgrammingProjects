@@ -38,8 +38,11 @@ $ """)
 
     elif user_choice == "2":
         password_to_delete = input("\n What password do you would like to delete ?\n$ ")
-        clearline(get_id_with_name(password_to_delete))
-        print(f"The password {password_to_delete} has been deleted")
+        if password_to_delete in readcolumn("name"):
+            clearline(get_id_with_name(password_to_delete))
+            print(f"The password {password_to_delete} has been deleted")
+        else:
+            print("Enter a valid name")
 
     elif user_choice == "3":
         while True:
@@ -74,17 +77,22 @@ $ """)
 
         # Afficher les résultats
         print(" | ".join(column))
+        invalid_passwords = []
         for line in lines[1:]:  # sauf la premiere colonne
             print(f"{line[0]} : {decrypt(line[1])}")
             if decrypt(line[1]) == "Invalid key":
                 invalid_key_password_count += 1
+                invalid_passwords.append(line[0])
 
         if invalid_key_password_count > 0:
             print(f"\n{invalid_key_password_count} "
                   f"passwords could not be decrypted because the main password is not the same as during encryption")
 
             if input("Do you want to delete these password ? (y/n)\n$ ") == "y":
-                pass
+                for name in invalid_passwords:
+                    clearline(get_id_with_name(name))
+
+                print("All invalid password have been deleted")
 
     elif user_choice == "5":
         if hash_(input("\nEnter your main password to continue :\n$ ")) == readcell(1, 2):
@@ -106,7 +114,6 @@ $ """)
         updatecell(1, "password", hash_(str(input("new main password\n$ "))))
         for i in range(len(all_passwords[1:])):
             addline(all_passwords_name[i], crypt(encrypt_password[all_passwords_name[i]]))
-
 
     else:
         print("Invalid choice")
