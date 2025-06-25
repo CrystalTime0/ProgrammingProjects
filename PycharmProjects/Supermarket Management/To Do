@@ -1,0 +1,28 @@
+hire employee ( cost per day --> more client )
+
+
+restock ( cost --> product )
+pass day ( make all transaction )
+
+manage products {
+
+restock
+see stock
+unlock product
+
+}
+
+manage employees {
+
+hire employee
+fire employee
+see employee
+
+}
+
+manage fund {
+
+see yesterday bill
+(loan)
+
+}
