@@ -5,27 +5,25 @@ cursor = conn.cursor()
 
 
 # -------------------- Initialize BD --------------------
-def initialize_BD():
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS to_do_list (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL UNIQUE,
-            time INTEGER NOT NULL,
-            xp INTEGER NOT NULL,
-            creation_date TEXT NOT NULL,
-            description TEXT
-            )  
-        """)
+def initialize_BD(all_username):
+    for name in all_username:
+        cursor.execute(f"""
+            CREATE TABLE IF NOT EXISTS {name} (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE,
+                time INTEGER NOT NULL,
+                xp INTEGER NOT NULL,
+                creation_date TEXT NOT NULL,
+                description TEXT
+                )  
+            """)
 
     conn.commit()
 
 
-initialize_BD()
-
-
 # -------------------- GET DATA --------------------
-def readcell(line, column):
-    cursor.execute("SELECT * FROM to_do_list WHERE id = ?", (line,))
+def readcell(line, column, table):
+    cursor.execute(f"SELECT * FROM {table} WHERE id = ?", (line,))
     conn.commit()
     bd_line = cursor.fetchone()
 
@@ -35,8 +33,8 @@ def readcell(line, column):
         print("cell not found")
 
 
-def readline(line):
-    cursor.execute("SELECT * FROM to_do_list WHERE id = ?", (line,))
+def readline(line, table):
+    cursor.execute(f"SELECT * FROM {table} WHERE id = ?", (line,))
     conn.commit()
     bd_line = cursor.fetchone()
 
@@ -46,8 +44,8 @@ def readline(line):
         print("line not found")
 
 
-def readcolumn(column):
-    cursor.execute(f"""SELECT {column} FROM to_do_list""")
+def readcolumn(column, table):
+    cursor.execute(f"""SELECT {column} FROM {table}""")
     resultats = [line[0] for line in cursor.fetchall()]
     return resultats
 
@@ -60,8 +58,8 @@ def get_id_with_name(name):
 
 
 # -------------------- UPDATE DATA --------------------
-def updatecell(line, column_title, data):
-    cursor.execute(f"""UPDATE to_do_list SET {column_title} = ? WHERE id = ?""", (data, line))
+def updatecell(line, column_title, data, table):
+    cursor.execute(f"""UPDATE {table} SET {column_title} = ? WHERE id = ?""", (data, line))
     conn.commit()
 
 
@@ -71,19 +69,19 @@ def updateline(line, name, password):
 
 
 # -------------------- ADD DATA --------------------
-def addline(name, time, xp, creation_date, description):
-    cursor.execute("""INSERT INTO to_do_list (name, time, xp, creation_date, description) 
+def addline(name, time, xp, creation_date, description, table):
+    cursor.execute(f"""INSERT INTO {table} (name, time, xp, creation_date, description) 
                             VALUES (?, ?, ?, ?, ?)""", (name, time, xp, creation_date, description))
     conn.commit()
 
 
 # -------------------- REMOVE DATA --------------------
 
-def clearline(line):
-    cursor.execute("""DELETE FROM to_do_list WHERE id = ?""", (line,))
+def clearline(line, table):
+    cursor.execute(f"""DELETE FROM {table} WHERE id = ?""", (line,))
     conn.commit()
 
 
-def cleardata():
-    cursor.execute("""DELETE FROM to_do_list""")
+def cleardata(table):
+    cursor.execute(f"""DELETE FROM {table}""")
     conn.commit()
