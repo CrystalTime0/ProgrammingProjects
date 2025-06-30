@@ -9,12 +9,12 @@ while True:
     else:
         user_try_mdp = str(input("Main Password : \n$ "))
 
+        if hash_(user_try_mdp) == readcell(1, 2):
+            break
+
         if user_try_mdp == "forget":
             updatecell(1, "password", "")
             continue
-
-        if hash_(user_try_mdp) == readcell(1, 2):
-            break
 
         else:
             print("Invalid password")
