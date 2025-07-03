@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="test" pattern="file[ProgrammingProjects]:PycharmProjects/Tuto/tests//*" />
+</component>
