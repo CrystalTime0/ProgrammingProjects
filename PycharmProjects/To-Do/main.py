@@ -74,6 +74,25 @@ $ """)
         actual_date = date.today()
         addline(task_name, expected_time_to_finish_task, experience_task, actual_date, task_description, current_user)
 
+    elif user_choice == "2":
+        clearline(get_id_with_name(input("what task do you want to delete ? (name)"), current_user), current_user)
+
+    elif user_choice == "3":
+        cursor.execute(f'SELECT * FROM {current_user}')
+        column = [description[0] for description in cursor.description]
+        column = column[1:]
+
+        # Construire la requête SELECT avec seulement les colonnes souhaitées
+        request = f"SELECT {', '.join(column)} FROM {current_user}"
+        cursor.execute(request)
+        lines = cursor.fetchall()
+
+        # Afficher les résultats
+        print(" | ".join(column))
+        invalid_passwords = []
+        for line in lines:
+            print(" | ".join(map(str, line)))
+
     save_user_data()
 
 

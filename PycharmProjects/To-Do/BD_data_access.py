@@ -50,8 +50,8 @@ def readcolumn(column, table):
     return resultats
 
 
-def get_id_with_name(name):
-    cursor.execute("""SELECT id FROM to_do_list WHERE name = ?""", (name,))
+def get_id_with_name(name, table):
+    cursor.execute(f"""SELECT id FROM {table} WHERE name = ?""", (name,))
     conn.commit()
     id_found = cursor.fetchone()
     return id_found[0]
