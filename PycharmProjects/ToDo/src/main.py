@@ -1,15 +1,14 @@
 import json
-import sqlite3
 from datetime import date
 from BD_data_access import *
 import os
 from Crytpter import *
+from  config import *
 
 current_user = ""
 
 # -------------------- JSON MANIPULATION --------------------
 
-data_file = "data.json"
 all_users_data = {}
 all_users_data_lenght = 0
 all_users_names = []
@@ -18,20 +17,20 @@ all_users_names = []
 def save_user_data(data):
 
     # Sauvegarder le tout
-    with open(data_file, "w", encoding="utf-8") as f:
+    with open(DATA_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
         print("\nDonnées d'utilisateurs sauvegardées.")
 
 
-def load_user_data():
+def load_user_data(data_path):
     global all_users_data
     global all_users_data_lenght
     global all_users_names
-    if not os.path.exists(data_file):
+    if not os.path.exists(data_path):
         print("Fichier de données introuvable.")
         return None
 
-    with open(data_file, "r", encoding="utf-8") as f:
+    with open(data_path, "r", encoding="utf-8") as f:
         all_users_data = json.load(f)
         all_users_names = list(all_users_data.keys())
 
@@ -49,7 +48,7 @@ def login():
 
 # -------------------- SETUP --------------------
 if __name__ == "__main__":
-    load_user_data()
+    load_user_data(DATA_PATH)
     print(all_users_names)
     initialize_BD(all_users_names)
     login()

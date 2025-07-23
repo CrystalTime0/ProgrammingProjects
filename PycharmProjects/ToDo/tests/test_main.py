@@ -1,6 +1,7 @@
 import os.path
-
 import pytest
+import json
+from config import *
 from src.main import save_user_data
 
 @pytest.fixture
@@ -19,9 +20,22 @@ def all_user_data():
         "xp": 300
     }
 }
+@pytest.fixture
+def data_path():
+    return DATA_PATH
 
 def test_save_user_data(all_user_data):
     save_user_data(all_user_data)
+    with open(DATA_PATH, "r", encoding="utf-8") as f:
+        generated_all_users_data = json.load(f)
 
-def test_load_user_data():
-    assert os.path.exists(da)
+    assert all_user_data == generated_all_users_data
+
+def test_load_user_data(data_path):
+    assert os.path.exists(data_path)
+
+    with open(DATA_PATH, "r", encoding="utf-8") as f:
+        decoder = json.JSONDecoder()
+        data_str = f.read()
+        all_users_data, i = decoder.raw_decode(data_str)
+
