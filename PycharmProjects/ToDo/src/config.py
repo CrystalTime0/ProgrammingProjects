@@ -1,7 +1,7 @@
 
 
 # -------------------- JSON --------------------
-DATA_PATH = "data.json"
+DATA_PATH = "data/data.json"
 
 
 # -------------------- Initialize BD --------------------

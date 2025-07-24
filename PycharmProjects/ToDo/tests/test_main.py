@@ -1,6 +1,9 @@
 import os.path
 import pytest
 import json
+
+from orca.debug import println
+
 from config import *
 from src.main import save_user_data
 
@@ -31,11 +34,12 @@ def test_save_user_data(all_user_data):
 
     assert all_user_data == generated_all_users_data
 
-def test_load_user_data(data_path):
+def test_load_user_data(data_path,all_user_data):
     assert os.path.exists(data_path)
 
     with open(DATA_PATH, "r", encoding="utf-8") as f:
         decoder = json.JSONDecoder()
         data_str = f.read()
-        all_users_data, i = decoder.raw_decode(data_str)
+        loaded_data, i = decoder.raw_decode(data_str)
 
+    assert loaded_data == all_user_data
