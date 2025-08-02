@@ -1,0 +1,103 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #cabbaa;
+}
+#form{
+    margin: 8rem auto;
+    padding: 3rem;
+
+    width: 20vw;
+    min-width: 300px;
+    height: 60vh;
+
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 1rem;
+    align-items: center;
+    box-shadow: 0.5rem 1rem 1rem #787878;
+
+}
+#login{
+    align-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+#div-input-email{
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+#div-input-password{
+    width: 100%;
+    height: 2.5rem;
+    margin-bottom: 0.6rem;
+}
+
+input{
+    width: 100%;
+    padding: 0.3rem;
+    border-color: black;
+    border-width: 1px;
+}
+input[type=email]{
+    background: url("assets/img/email-icon-png.png") no-repeat left center ;
+    background-size: 18px 18px;
+    background-position-x: 2px;
+    padding-left: 24px ;
+}
+input[type=password]{
+    background: url("assets/img/key.png") no-repeat left center ;
+    background-size: 18px 18px;
+    background-position-x: 2px;
+    padding-left: 24px ;
+}
+
+input:focus{
+    background-color:#f3f3f3;
+}
+
+
+#forgot-password{
+    width: 100%;
+    text-align: right;
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+#login-button{
+    justify-self: flex-end;
+    width: 100%;
+    height: 2.3rem;
+    border-radius: 2rem;
+    font-size: 1.2rem;
+    border-width: 2px;
+    border-color: black;
+    background-color: #ff7c4a;
+    color: white;
+    box-shadow: 0 2px #666;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+#login-button:active {
+    background-color: #ff9465;
+    box-shadow: 0 1px #666;
+    transform: translateY(1px);
+}
+#div-sign-up{
+    align-content: center;
+}
+#text-sign-up{
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 0.4rem;
+}
+
+#Terms-Conditions{
+    margin-top: 3rem;
+}
