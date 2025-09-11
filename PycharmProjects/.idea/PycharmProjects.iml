@@ -22,6 +22,8 @@
       <sourceFolder url="file://$MODULE_DIR$/small projects/Find_The_Number/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/small projects/Pierre feuille papier ciseaux/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/small projects/Pierre feuille papier ciseaux/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/Computer/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Computer/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/dqd" />
     </content>
     <orderEntry type="inheritedJdk" />
