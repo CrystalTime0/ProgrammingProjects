@@ -21,11 +21,14 @@ class CPU:
         elif self.reg[2] == 0x02:  # IN Increment +1 [registre]
             self.reg[self.ram.data[self.pc + 1]] = self.alu.add(self.reg[self.ram.data[self.pc + 1]], 0x01)
             instr_size = 2
+        elif self.reg[2] == 0x03:  # ADC Addition with Carry [operand]
+            self.reg[0] = self.alu.add(self.ram.data[self.pc + 1], self.reg[0])
+            instr_size = 2
 
         elif self.reg[2] == 0xFF:  # HALT
             self.running = False
 
         self.pc += instr_size
         self.clock += 1
-        if self.clock == 5:
+        if self.clock == 100:
             self.running = False
