@@ -10,8 +10,8 @@ with open("code.txt", "r") as code:
     lines = code.readline()
 lines = [int(op, 16) for op in lines.split()]
 
-for address, op in enumerate(lines):
-    ram.data[address] = op
+for address, value in enumerate(lines):
+    ram.write(address, value)
 
 while cpu.running:
     cpu.step()
