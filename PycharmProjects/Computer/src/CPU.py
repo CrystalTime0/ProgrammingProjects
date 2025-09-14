@@ -10,49 +10,63 @@ class CPU:
         self.clock = 0
 
         self.INSTRUCTIONS: Dict[int, Callable[..., Any]] = {
-            0x01: self.LDA,
-            0x02: self.STA,
-            0x03: self.ADD,
-            0x04: self.SUB,
-            0x05: self.CMP,
-            0x06: self.JMP,
-            0x07: self.JZ,
-            0x08: self.JNZ,
-            0x09: self.AND,
-            0x0A: self.OR,
-            0x0B: self.XOR,
-            0x0C: self.NOT,
-            0x0D: self.INC,
-            0x0E: self.DEC,
-            0x0F: self.SHL,
-            0x10: self.SHR,
+            0x01: self.LDI,
+            0x02: self.LDA,
+            0x03: self.STA,
+            0x04: self.ADD,
+            0x05: self.SUB,
+            0x06: self.CMP,
+            0x07: self.JMP,
+            0x08: self.JZ,
+            0x09: self.JNZ,
+            0x0A: self.JN,
+            0x0B: self.JNN,
+            0x0C: self.AND,
+            0x0D: self.OR,
+            0x0E: self.XOR,
+            0x0F: self.NOT,
+            0x10: self.INC,
+            0x11: self.DEC,
+            0x12: self.SHL,
+            0x13: self.SHR,
+            0x14: self.PRT,
+            0x15: self.IPT,
             0xFF: self.HLT,
         }
         self.INSTRUCTIONS_SIZE = {
-            0x01: 2,  # LDA
-            0x02: 2,  # STA
-            0x03: 2,  # ADD
-            0x04: 2,  # SUB
-            0x05: 2,  # CMP
-            0x06: 2,  # JMP
-            0x07: 2,  # JZ
-            0x08: 2,  # JNZ
-            0x09: 2,  # AND
-            0x0A: 2,  # OR
-            0x0B: 2,  # XOR
-            0x0C: 1,  # NOT
-            0x0D: 1,  # INC
-            0x0E: 1,  # DEC
-            0x0F: 1,  # SHL
-            0x10: 1,  # SHR
+            0x01: 2,  # LDI (val)
+            0x02: 2,  # LDA (addr)
+            0x03: 2,  # STA (addr)
+            0x04: 2,  # ADD (val)
+            0x05: 2,  # SUB (val)
+            0x06: 2,  # CMP (val)
+            0x07: 2,  # JMP (addr)
+            0x08: 2,  # JZ (addr)
+            0x09: 2,  # JNZ (addr)
+            0x0A: 2,  # JN (addr)
+            0x0B: 2,  # JNN (addr)
+            0x0C: 2,  # AND (val)
+            0x0D: 2,  # OR  (val)
+            0x0E: 2,  # XOR (val)
+            0x0F: 1,  # NOT
+            0x10: 1,  # INC
+            0x11: 1,  # DEC
+            0x12: 1,  # SHL
+            0x13: 1,  # SHR
+            0x14: 2,  # PRT (addr)
+            0x15: 1,  # IPT
             0xFF: 1,  # HLT
         }
 
     # ----------------------- INSTRUCTIONS ----------------------- #
     # --- Lecture ---
-    def LDA(self, *args):
+    def LDI(self, *args):
         value = args[0]
         self.reg["ACC"] = value  # Charger l'opérande dans l'Accumulateur
+
+    def LDA(self, *args):
+        addr = args[0]
+        self.reg["ACC"] = self.ram.read(addr)
 
     # --- Écriture ---
     def STA(self, *args):
@@ -102,18 +116,35 @@ class CPU:
     def SHR(self):
         self.reg["ACC"] = self.alu.SHR(self.reg["ACC"])
 
+    # --- I/O ---
+    def PRT(self, *args):
+        addr = args[0]
+        print(self.ram.data[addr])
+    def IPT(self):
+        self.reg["ACC"] = int(input("?"))
+
     # --- Contrôle ---
     def JMP(self, *args):  # Saute à l’adresse mémoire spécifiée
         addr = args[0]
         self.reg["PC"] = addr
 
-    def JZ(self, *args):  # Saute à l’adresse mémoire spécifiée si le flag Z de l'alu = 0
+    def JZ(self, *args):  # Saute à l’adresse mémoire spécifiée si le flag Z de l'alu = 1
         if self.alu.flags["Z"] == 1:
             addr = args[0]
             self.reg["PC"] = addr
 
-    def JNZ(self, *args):  # Saute à l’adresse mémoire spécifiée si le flag Z de l'alu != 0
+    def JNZ(self, *args):  # Saute à l’adresse mémoire spécifiée si le flag Z de l'alu = 0
         if self.alu.flags["Z"] == 0:
+            addr = args[0]
+            self.reg["PC"] = addr
+
+    def JN(self, *args):  # Saute à l’adresse mémoire spécifiée si le flag N de l'alu = 1
+        if self.alu.flags["N"] == 1:
+            addr = args[0]
+            self.reg["PC"] = addr
+
+    def JNN(self, *args):  # Saute à l’adresse mémoire spécifiée si le flag N de l'alu = 0
+        if self.alu.flags["N"] == 0:
             addr = args[0]
             self.reg["PC"] = addr
 
