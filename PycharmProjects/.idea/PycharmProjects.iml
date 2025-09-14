@@ -26,7 +26,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Computer/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/dqd" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.11" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyNamespacePackagesService">

@@ -9,27 +9,43 @@ class CPU:
         self.running = True
         self.clock = 0
 
-        self.INSTRUCTIONS: Dict[int, Callable[..., Any]] = {  # Rajouter AND, OR, XOR, NOT, INC, DEC (SHL et SHR)
-            0x00: self.LDA,
-            0x01: self.STA,
-            0x02: self.ADD,
-            0x03: self.SUB,
-            0x04: self.CMP,
-            0x05: self.JMP,
-            0x06: self.JZ,
-            0x07: self.JNZ,
-            0xFF: self.HLT
+        self.INSTRUCTIONS: Dict[int, Callable[..., Any]] = {
+            0x01: self.LDA,
+            0x02: self.STA,
+            0x03: self.ADD,
+            0x04: self.SUB,
+            0x05: self.CMP,
+            0x06: self.JMP,
+            0x07: self.JZ,
+            0x08: self.JNZ,
+            0x09: self.AND,
+            0x0A: self.OR,
+            0x0B: self.XOR,
+            0x0C: self.NOT,
+            0x0D: self.INC,
+            0x0E: self.DEC,
+            0x0F: self.SHL,
+            0x10: self.SHR,
+            0xFF: self.HLT,
         }
         self.INSTRUCTIONS_SIZE = {
-            0x00: 2,
-            0x01: 2,
-            0x02: 2,
-            0x03: 2,
-            0x04: 2,
-            0x05: 2,
-            0x06: 2,
-            0x07: 2,
-            0xFF: 1
+            0x01: 2,  # LDA
+            0x02: 2,  # STA
+            0x03: 2,  # ADD
+            0x04: 2,  # SUB
+            0x05: 2,  # CMP
+            0x06: 2,  # JMP
+            0x07: 2,  # JZ
+            0x08: 2,  # JNZ
+            0x09: 2,  # AND
+            0x0A: 2,  # OR
+            0x0B: 2,  # XOR
+            0x0C: 1,  # NOT
+            0x0D: 1,  # INC
+            0x0E: 1,  # DEC
+            0x0F: 1,  # SHL
+            0x10: 1,  # SHR
+            0xFF: 1,  # HLT
         }
 
     # ----------------------- INSTRUCTIONS ----------------------- #
@@ -52,10 +68,39 @@ class CPU:
         value = args[0]
         self.reg["ACC"] = self.alu.SUB(self.reg["ACC"], value)  # Soustraire l'opérande à l'accumulateur
 
+    def INC(self):
+        self.reg["ACC"] = self.alu.INC(self.reg["ACC"])
+
+    def DEC(self):
+        self.reg["ACC"] = self.alu.DEC(self.reg["ACC"])
+
+    # --- Logique ---
+    def AND(self, *args):
+        value = args[0]
+        self.reg["ACC"] = self.alu.AND(self.reg["ACC"], value)
+
+    def OR(self, *args):
+        value = args[0]
+        self.reg["ACC"] = self.alu.OR(self.reg["ACC"], value)
+
+    def XOR(self, *args):
+        value = args[0]
+        self.reg["ACC"] = self.alu.XOR(self.reg["ACC"], value)
+
+    def NOT(self):
+        self.reg["ACC"] = self.alu.NOT(self.reg["ACC"])
+
     # --- Comparaison ---
     def CMP(self, *args):
         value = args[0]
         self.alu.CMP(self.reg["ACC"], value)  # Comparer l'opérande et l'accumulateur
+
+    # --- Déplacement ---
+    def SHL(self):
+        self.reg["ACC"] = self.alu.SHL(self.reg["ACC"])
+
+    def SHR(self):
+        self.reg["ACC"] = self.alu.SHR(self.reg["ACC"])
 
     # --- Contrôle ---
     def JMP(self, *args):  # Saute à l’adresse mémoire spécifiée

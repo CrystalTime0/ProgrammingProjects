@@ -45,10 +45,23 @@ class ALU:
         return r
 
     # --- Comparaison ---
+    def SHL(self, a):
+        self.flags["C"] = (a >> 7) & 1  # bit de gauche → Carry
+        r = (a << 1) & 0xFF  # Décalage + garde 8bit
+        self._update_flags(r)
+        return r
+
+    def SHR(self, a):
+        self.flags["C"] = a & 1  # bit de droite → Carry
+        r = (a >> 1) & 0xFF  # Décalage + garde 8bit
+        self._update_flags(r)
+        return r
+
+    # --- Comparaison ---
     def CMP(self, a, b):  # Se servir des flags pour avoir le résultat
         r = a - b
         self._update_flags(r)
-        self.flags["C"] = int(a < b)  # Pour savoir si on a dépasser les 8bit ex: -5 = 251
+        self.flags["C"] = int(a < b)  # Pour savoir si on a dépassé les 8bit ex : -5 = 251
 
     # --- Méthode interne pour mettre à jour les flags ---
     def _update_flags(self, result):
