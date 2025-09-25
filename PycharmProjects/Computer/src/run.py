@@ -1,25 +1,26 @@
 from RAM import RAM
 from CPU import CPU
 from ALU import ALU
+from ASSEMBLEUR import ASSEMBLEUR
 
 # --- SETUP ---
-prgm_filepath = "prgm/even_or_not.txt"
-log = False
+prgm_filepath = "prgm/ass/even_or_odd.txt"
+mode = "asm"
+log = True
 
 alu = ALU()
 ram = RAM()
 cpu = CPU(ram, alu)
+assembleur = ASSEMBLEUR(prgm_filepath, mode)
+
 
 def log_print():
     print(vars(cpu))
     print(vars(vars(cpu)["ram"]))
     print(alu.flags)
 
-with open(prgm_filepath, "r") as code:
-    lines = code.readline()
-lines = [int(op, 16) for op in lines.split()]
 
-for address, value in enumerate(lines):
+for address, value in enumerate(assembleur.assemble()):
     ram.write(address, value)
 
 # --- EXECUTION ---
