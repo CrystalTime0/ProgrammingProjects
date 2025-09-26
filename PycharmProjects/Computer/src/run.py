@@ -4,7 +4,7 @@ from ALU import ALU
 from ASSEMBLEUR import ASSEMBLEUR
 
 # --- SETUP ---
-prgm_filepath = "prgm/ass/even_or_odd.txt"
+prgm_filepath = "prgm/asm/even_or_odd.txt"
 mode = "asm"
 log = True
 
