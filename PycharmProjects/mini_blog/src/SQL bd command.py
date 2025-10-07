@@ -5,7 +5,7 @@ cursor = conn.cursor()
 
 # Création d'une table
 cursor.execute("""
-    DROP TABLE mdp;
+    DROP TABLE user;
 
 """)
 conn.commit()
