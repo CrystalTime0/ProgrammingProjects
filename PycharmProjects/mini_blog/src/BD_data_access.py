@@ -1,18 +1,13 @@
 import sqlite3
 
 
-conn = sqlite3.connect('data/mdp.db')
+conn = sqlite3.connect('data/data.db')
 cursor = conn.cursor()
 
 
-class BD_access:
+class BDaccess:
     def __init__(self, table: str, descriptors: list, descriptors_and_properties: str):
-        cursor.execute(f"""
-                CREATE TABLE IF NOT EXISTS (table) (
-                    {descriptors_and_properties}
-                )
-
-            """, table)
+        cursor.execute(f"""CREATE TABLE IF NOT EXISTS {table} ({descriptors_and_properties})""")
         # cursor.execute("""INSERT OR IGNORE INTO mdp (name, password) VALUES(?, ?)""", ("main", ""))
         conn.commit()
 
@@ -20,8 +15,8 @@ class BD_access:
         self.descriptors = descriptors
 
     # -------------------- GET DATA --------------------
-    def readcell(self, line, column):
-        cursor.execute(f"SELECT * FROM {self.table} WHERE id = ?", (line,))
+    def readcell(self, id_, column):
+        cursor.execute(f"SELECT * FROM {self.table} WHERE id = ?", (id_,))
         conn.commit()
         bd_line = cursor.fetchone()
 
@@ -45,8 +40,12 @@ class BD_access:
         resultats = [line[0] for line in cursor.fetchall()]
         return resultats
 
-    def get_id_with_(self, descriptor, value):
-        cursor.execute(f"""SELECT id FROM {self.table} WHERE {descriptor} = {value}""")
+    def get_with_(self,val_to_get,  descriptor, value):
+        try:
+            cursor.execute(f"""SELECT {val_to_get} FROM {self.table} WHERE {descriptor} = {value}""")
+        except sqlite3.OperationalError:
+            return None
+
         conn.commit()
         id_found = cursor.fetchone()
         return id_found[0]
