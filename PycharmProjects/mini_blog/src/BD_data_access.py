@@ -24,6 +24,7 @@ class BDaccess:
             return bd_line[column]
         else:
             print("cell not found")
+            return None
 
     def readline(self, line):
         cursor.execute(f"SELECT * FROM {self.table} WHERE id = ?", (line,))
@@ -34,6 +35,7 @@ class BDaccess:
             return bd_line
         else:
             print("line not found")
+            return None
 
     def readcolumn(self, column):
         cursor.execute(f"""SELECT {column} FROM {self.table}""")
@@ -56,7 +58,7 @@ class BDaccess:
         conn.commit()
 
     # -------------------- ADD DATA --------------------
-    def addline(self, values: list[any], columns: list[str]):
+    def addline(self, values: list, columns: list[str]):
         """
         Ajoute une ligne dans la table self.table.
 
