@@ -125,7 +125,10 @@ def manche(joueurs, pot, phase="charge"):
     pire = classement[-1]
     print(f"\n⭐ Meilleur : {meilleur[0]} avec {meilleur[1][2]}")
     print(f"💀 Pire : {pire[0]} avec {pire[1][2]}\n")
-    jetons_a_donner = meilleur[1][1]
+    if pire[1][3] == [2, 2, 1]:
+        jetons_a_donner = 2
+    else:
+        jetons_a_donner = meilleur[1][1]
 
     if phase == "charge":
         jetons_effectifs = min(jetons_a_donner, pot)
