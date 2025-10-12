@@ -101,7 +101,7 @@ def manche(joueurs, pot, phase="charge"):
 
     # Chaque joueur joue son tour
     for j in joueurs:
-        resultats[j] = jouer_tour(j)  # rang, jetons, nom, des ex : {'raph' : (92, 2, '2 As + 2', [1, 2, 1])}
+        resultats[j] = jouer_tour(j)  # rang, jetons, nom, des ex : {'raph': (92, 2, '2 As + 2', [1, 2, 1])}
 
     # Classement par rang (du meilleur au pire)
     classement = sorted(resultats.items(), key=lambda x: x[1][0], reverse=True)  # x = [(joueur, (rang, jetons, nom, des)),(joueur, data)]
