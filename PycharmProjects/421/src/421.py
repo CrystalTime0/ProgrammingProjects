@@ -171,7 +171,7 @@ def jouer_421():
         jetons_a_transferer = min(nb, jetons[gagnant])
         jetons[gagnant] -= jetons_a_transferer
         jetons[perdant] += jetons_a_transferer
-        if jetons[gagnant] < 0:
+        if jetons[gagnant] < 0:  # évite les cas de total de jetons négatifs
             jetons[gagnant] = 0
         print(f"Jetons : {jetons}")
 

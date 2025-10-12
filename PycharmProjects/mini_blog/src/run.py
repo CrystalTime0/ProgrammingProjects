@@ -3,7 +3,7 @@ import sqlite3
 from BD_data_access import BDaccess
 from datetime import datetime
 
-db_user = BDaccess("user", ["username", "password", "creation time"],
+db_user = BDaccess("user", ["username", "password", "creation_time"],
                    """username TEXT NOT NULL UNIQUE,
                                            password TEXT NOT NULL,
                                            creation_time DATETIME NOT NULL
