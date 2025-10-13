@@ -44,9 +44,10 @@ class BDaccess:
 
     def get_with_(self,val_to_get,  descriptor, value):
         try:
-            cursor.execute(f"""SELECT {val_to_get} FROM {self.table} WHERE {descriptor} = {value}""")
-        except sqlite3.OperationalError:
-            return None
+            query = f"""SELECT {val_to_get} FROM {self.table} WHERE {descriptor} = "{value}" """
+            cursor.execute(query)
+        except sqlite3.OperationalError as e:
+            raise e
 
         conn.commit()
         id_found = cursor.fetchone()
@@ -58,17 +59,16 @@ class BDaccess:
         conn.commit()
 
     # -------------------- ADD DATA --------------------
-    def addline(self, values: list, columns: list[str]):
+    def addline(self, values: list):
         """
         Ajoute une ligne dans la table self.table.
 
         :param values: Liste des valeurs à insérer
-        :param columns: Liste des noms de colonnes
         """
-        if len(values) != len(columns):
-            raise ValueError(f"Nombre de valeurs ({len(values)}) != nombre de colonnes ({len(columns)})")
+        if len(values) != len(self.descriptors):
+            raise ValueError(f"Nombre de valeurs ({len(values)}) != nombre de colonnes ({len(self.descriptors)})")
 
-        cols_str = ",".join(columns)
+        cols_str = ",".join(self.descriptors)
         placeholders = ",".join(["?"] * len(values))
 
         query = f"INSERT INTO {self.table} ({cols_str}) VALUES ({placeholders})"

@@ -12,14 +12,17 @@
 #    '----------------'  '----------------'  '----------------'
 #
 # Desc : Jeu de dés 421 - logique, valeur combinaisons, affichage console
-# Version : 1.0.0
+# Version : 1.0.1
 # Date : 2025-10-13
 #
 # Signatures :
 #   - Raphaël VILLARD        (Développeur principal)      Date: 2025-10-13
 #
 
-import random
+print("\033[35m    .----------------.  .----------------.  .----------------.\n   | .--------------. || .--------------. || .--------------. |\n   | |   _    _     | || |    _____     | || |     __       | |\n   | |  | |  | |    | || |   / ___ `.   | || |    /  |      | |\n   | |  | |__| |_   | || |  |_/___) |   | || |    `| |      | |\n   | |  |____   _|  | || |   .'____.'   | || |     | |      | |\n   | |      _| |_   | || |  / /____     | || |    _| |_     | |\n   | |     |_____|  | || |  |_______|   | || |   |_____|    | |\n   | |              | || |              | || |              | |\n   | '--------------' || '--------------' || '--------------' |\n    '----------------'  '----------------'  '----------------'\n\n\033[0m Desc : Jeu de dés 421 - logique, valeur combinaisons, affichage console\nVersion : 1.0.1\nDate : 2025-10-13\n\nSignatures :\n  - Raphaël VILLARD        (Développeur principal)      Date: 2025-10-13\n=======================================================================================\n ")
+
+
+from secrets import *
 from collections import Counter
 
 
@@ -29,13 +32,13 @@ from collections import Counter
 
 def lancer_des(nb=3):
     """Lance nb dés et retourne une liste triée décroissante."""
-    return sorted([random.randint(1, 6) for _ in range(nb)], reverse=True)
+    return [SystemRandom().randint(1, 6) for _ in range(nb)]
 
 
 def relancer_des(des, indices):
     """Relance les dés des indices donnés"""
     for i in indices:
-        des[int(i) - 1] = random.randint(1, 6)
+        des[int(i) - 1] = SystemRandom().randint(1, 6)
     return des
 
 
