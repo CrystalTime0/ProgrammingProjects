@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="ress" pattern="file[PycharmProjects]:ress//*" />
+</component>
