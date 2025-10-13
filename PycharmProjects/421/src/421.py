@@ -12,7 +12,7 @@
 #    '----------------'  '----------------'  '----------------'
 #
 # Desc : Jeu de dés 421 - logique, valeur combinaisons, affichage console
-# Version : 1.0.1
+# Version : 1.0.2
 # Date : 2025-10-13
 #
 # Signatures :
@@ -20,7 +20,11 @@
 #
 
 print("\033[35m    .----------------.  .----------------.  .----------------.\n   | .--------------. || .--------------. || .--------------. |\n   | |   _    _     | || |    _____     | || |     __       | |\n   | |  | |  | |    | || |   / ___ `.   | || |    /  |      | |\n   | |  | |__| |_   | || |  |_/___) |   | || |    `| |      | |\n   | |  |____   _|  | || |   .'____.'   | || |     | |      | |\n   | |      _| |_   | || |  / /____     | || |    _| |_     | |\n   | |     |_____|  | || |  |_______|   | || |   |_____|    | |\n   | |              | || |              | || |              | |\n   | '--------------' || '--------------' || '--------------' |\n    '----------------'  '----------------'  '----------------'\n\n\033[0m Desc : Jeu de dés 421 - logique, valeur combinaisons, affichage console\nVersion : 1.0.1\nDate : 2025-10-13\n\nSignatures :\n  - Raphaël VILLARD        (Développeur principal)      Date: 2025-10-13\n=======================================================================================\n ")
+import time
+from rich.progress import track
 
+for i in track(range(50), description="Processing..."):
+    time.sleep(0.01)  # Simulate work being done
 
 from secrets import *
 from collections import Counter
