@@ -12,19 +12,30 @@
 #    '----------------'  '----------------'  '----------------'
 #
 # Desc : Jeu de dés 421 - logique, valeur combinaisons, affichage console
-# Version : 1.0.2
+# Version : 1.1.0
 # Date : 2025-10-13
 #
 # Signatures :
 #   - Raphaël VILLARD        (Développeur principal)      Date: 2025-10-13
 #
 
-print("\033[35m    .----------------.  .----------------.  .----------------.\n   | .--------------. || .--------------. || .--------------. |\n   | |   _    _     | || |    _____     | || |     __       | |\n   | |  | |  | |    | || |   / ___ `.   | || |    /  |      | |\n   | |  | |__| |_   | || |  |_/___) |   | || |    `| |      | |\n   | |  |____   _|  | || |   .'____.'   | || |     | |      | |\n   | |      _| |_   | || |  / /____     | || |    _| |_     | |\n   | |     |_____|  | || |  |_______|   | || |   |_____|    | |\n   | |              | || |              | || |              | |\n   | '--------------' || '--------------' || '--------------' |\n    '----------------'  '----------------'  '----------------'\n\n\033[0m Desc : Jeu de dés 421 - logique, valeur combinaisons, affichage console\nVersion : 1.0.1\nDate : 2025-10-13\n\nSignatures :\n  - Raphaël VILLARD        (Développeur principal)      Date: 2025-10-13\n=======================================================================================\n ")
+print("\033[35m    .----------------.  .----------------.  .----------------.\n   | .--------------. || .--------------. || .--------------. |\n   | |   _    _     | || |    _____     | || |     __       | |\n   | |  | |  | |    | || |   / ___ `.   | || |    /  |      | |\n   | |  | |__| |_   | || |  |_/___) |   | || |    `| |      | |\n   | |  |____   _|  | || |   .'____.'   | || |     | |      | |\n   | |      _| |_   | || |  / /____     | || |    _| |_     | |\n   | |     |_____|  | || |  |_______|   | || |   |_____|    | |\n   | |              | || |              | || |              | |\n   | '--------------' || '--------------' || '--------------' |\n    '----------------'  '----------------'  '----------------'\n\n\033[0m Desc : Jeu de dés 421 - logique, valeur combinaisons, affichage console\nVersion : 1.0.1\nDate : 2025-10-13\n\nSignatures :\n  - Raphaël VILLARD        (Développeur principal)      Date: 2025-10-13\n======================================================================================= ")
 import time
-from rich.progress import track
+import sys
 
-for i in track(range(50), description="Processing..."):
-    time.sleep(0.01)  # Simulate work being done
+def progress_bar(total, prefix='', suffix='', length=50):
+    for i in range(total + 1):
+        percent = int(100 * i / total)
+        filled_length = int(length * i // total)
+        bar = '█' * filled_length + '-' * (length - filled_length)
+        sys.stdout.write(f'\r{prefix} |{bar}| {percent}% {suffix}')
+        sys.stdout.flush()
+        time.sleep(0.02)  # juste pour la démo
+    print("\n")  # aller à la ligne à la fin
+
+# Exemple d'utilisation
+progress_bar(100, prefix='Chargement:', suffix='Terminé')
+
 
 from secrets import *
 from collections import Counter
