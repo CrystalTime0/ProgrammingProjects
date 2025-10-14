@@ -1,5 +1,22 @@
+#
+#    __   __  ___   __    _  ___          _______  ___      _______  _______
+#   |  |_|  ||   | |  |  | ||   |        |  _    ||   |    |       ||       |
+#   |       ||   | |   |_| ||   |  ____  | |_|   ||   |    |   _   ||    ___|
+#   |       ||   | |       ||   | |____| |       ||   |    |  | |  ||   | __
+#   |       ||   | |  _    ||   |        |  _   | |   |___ |  |_|  ||   ||  |
+#   | ||_|| ||   | | | |   ||   |        | |_|   ||       ||       ||   |_| |
+#   |_|   |_||___| |_|  |__||___|        |_______||_______||_______||_______|
+#
+# Desc : mini-Blog gestion de topics, MP, message et log-in
+# Version : 0.1.0
+# Date : 2025-10-14
+#
+# Signatures :
+#   - Raphaël VILLARD        (Développeur principal)      Date: 2025-10-13
+#
+print("\n    __   __  ___   __    _  ___          _______  ___      _______  _______\n   |  |_|  ||   | |  |  | ||   |        |  _    ||   |    |       ||       |\n   |       ||   | |   |_| ||   |  ____  | |_|   ||   |    |   _   ||    ___|\n   |       ||   | |       ||   | |____| |       ||   |    |  | |  ||   | __\n   |       ||   | |  _    ||   |        |  _   | |   |___ |  |_|  ||   ||  |\n   | ||_|| ||   | | | |   ||   |        | |_|   ||       ||       ||   |_| |\n   |_|   |_||___| |_|  |__||___|        |_______||_______||_______||_______|\n\nDesc : mini-Blog gestion de topics, MP, message et log-in\nVersion : 0.0.0\nDate : 2025-10-14\n\nSignatures :\n  - Raphaël VILLARD        (Développeur principal)      Date: 2025-10-13\n======================================================================================= \n\n")
+
 import sqlite3
-from ftplib import print_line
 
 from BD_data_access import BDaccess
 from datetime import datetime
@@ -51,9 +68,9 @@ if not admin:
                 continue
             break
 elif admin:
-    print_line("#" * 40)
-    print_line(" COMPTE ADMINISTRATEUR ".center(40,"#"))
-    print_line("#" * 40)
+    print("#" * 40)
+    print(" COMPTE ADMINISTRATEUR ".center(40,"#"))
+    print("#" * 40)
 #----------------------------------------------------------
 #### False Data ####
 #----------------------------------------------------------
@@ -67,6 +84,17 @@ db_message.addline(["hello", "raph", datetime.now().strftime("%Y-%m-%d %H:%M:%S"
 #----------------------------------------------------------
 topics = list(set(db_message.readcolumn("topic")))
 
-print("\n","TOPICS".center(20, "-"))
-for index, topic in enumerate(topics):
-    print(f"{index + 1} - {topic}")
+def display_topics_menu():
+    print("\n","TOPICS".center(20, "-"))
+    next_topics_index = 0
+    if topics:
+        for index, topic in enumerate(topics):
+            print(f"{index + 1} - {topic}")
+            next_topics_index = index + 1
+    print(f"{next_topics_index} - Create a new topic")
+
+def main():
+    display_topics_menu()
+
+if __name__ == "__main__":
+    main()
