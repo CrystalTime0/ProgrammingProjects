@@ -21,6 +21,9 @@ import sqlite3
 from BD_data_access import BDaccess
 from datetime import datetime
 
+def ask_color(text: str):
+     return f"\033[92m{text}\033[0m"
+
 #----------------------------------------------------------
 #### SETUP ####
 #----------------------------------------------------------
@@ -36,7 +39,6 @@ db_message = BDaccess("message", ["message", "user", "time", "topic"],
                                             topic TEXT NOT NULL
                                             """)
 
-current_user: str = ""
 admin = True
 #----------------------------------------------------------
 #### LOGIN ####
@@ -68,6 +70,7 @@ if not admin:
                 continue
             break
 elif admin:
+    current_user = "admin"
     print("#" * 40)
     print(" COMPTE ADMINISTRATEUR ".center(40,"#"))
     print("#" * 40)
@@ -82,16 +85,20 @@ db_message.addline(["hello", "raph", datetime.now().strftime("%Y-%m-%d %H:%M:%S"
 #----------------------------------------------------------
 #### MENU ####
 #----------------------------------------------------------
-topics = list(set(db_message.readcolumn("topic")))
+topics = sorted(list(set(db_message.readcolumn("topic"))))
 
 def display_topics_menu():
     print("\n","TOPICS".center(20, "-"))
-    next_topics_index = 0
     if topics:
         for index, topic in enumerate(topics):
             print(f"{index + 1} - {topic}")
-            next_topics_index = index + 1
-    print(f"{next_topics_index} - Create a new topic")
+    print(f"{len(topics) + 1} - Create a new topic\n")
+    while True:
+        try:
+            wanted_topic = int(input(ask_color("Dans quel topic voulez-vous aller ? : ")))
+            break
+        except ValueError:
+            print("Please Enter a valid number.\n")
 
 def main():
     display_topics_menu()
