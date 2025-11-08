@@ -105,4 +105,4 @@ button_1.place(
 )
 window.resizable(False, False)
 window.mainloop()
-from page2 import Page2
+from gui.build.page2 import Page2
