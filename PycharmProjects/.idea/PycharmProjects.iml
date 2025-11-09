@@ -29,14 +29,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Working/mini_blog/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/dqd" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.11" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-  </component>
-  <component name="PyNamespacePackagesService">
-    <option name="namespacePackageFolders">
-      <list>
-        <option value="$MODULE_DIR$/Tuto/tests" />
-      </list>
-    </option>
   </component>
 </module>
