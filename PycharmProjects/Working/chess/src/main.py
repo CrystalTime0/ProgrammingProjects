@@ -19,7 +19,6 @@ def get_positions(x: int, y: int) -> tuple:
 def main() -> None:
     run = True
     game_over = False
-    FPS = 30
     game = Game(Width, Height, Rows, Cols, Square, Win)
 
     while run:

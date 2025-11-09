@@ -1,11 +1,13 @@
-from board import newBoard
+import pygame.display
+
+from board import NewBoard
 from constants import *
 
 
 class Game:
     def __init__(self, width, height, rows, cols, square, win):
         self.Win = win
-        self.Board = newBoard(width, height, rows, cols, square, win)
+        self.Board = NewBoard(width, height, rows, cols, square, win)
         self.Square = square
         self.selected = None
         self.turn = WHITE
@@ -13,19 +15,24 @@ class Game:
         self.Black_pieces_left = 16
         self.White_pieces_left = 16
 
+    # Afficher les élements
     def update_window(self):
-        pass
+        # TO-DO : all draw
+        pygame.display.update()
 
+    # Recréer un nouveau plateau
     def reset(self):
         pass
 
+    # Vérifier les état ex: nombre de pieces restantes ou checkmate
     def check_game(self):
         pass
 
-    def enemies_moves(self, piece, board):
+    # Renvoie une liste de tuple contenant toutes les cases accessible en 1 coup par l'adversaire
+    def enemies_moves(self, piece, board) -> list[tuple]:
         pass
 
-    def get_King_pos(self, board):
+    def get_king_pos(self, board):
         pass
 
     def simulate_move(self, piece, row, col):
@@ -68,4 +75,4 @@ class Game:
                                    self.Square // 8)
 
     def get_board(self):
-        return self.board
+        return self.Board

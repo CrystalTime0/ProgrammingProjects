@@ -1,6 +1,9 @@
 import pygame
 import os
 
+# Configuration
+FPS = 30
+
 # Size
 Width, Height = 760, 760
 Rows, Cols = 8, 8
