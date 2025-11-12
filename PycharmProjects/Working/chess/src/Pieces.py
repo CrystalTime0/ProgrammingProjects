@@ -218,8 +218,126 @@ class Bishop(Piece):
                     self.available_moves.append((row_i, col_i))
                 break
 
+class Queen(Piece):
+    def __init__(self, Square, image, color, type, row, col):
+        super().__init__(Square, image, color, type, row, col)
 
+    def get_available_moves(self, Board):
+        self.clear_available_moves()
 
+        row, col = self.row, self.col
 
+        # ligne N row+
+        for i in range(row, -1, -1):
+            if Board[i][col] == 0:
+                self.available_moves.append((i, col))
+            else:
+                if Board[i][col].color != self.color:
+                    self.available_moves.append((i, col))
+                break
 
+        # ligne S row-
+        for i in range(row + 1, len(Board)):
+            if Board[i][col] == 0:
+                self.available_moves.append((i, col))
+            else:
+                if Board[i][col].color != self.color:
+                    self.available_moves.append((i, col))
+                break
+
+        # ligne O col-
+        for i in range(col, -1, -1):
+            if Board[row][i] == 0:
+                self.available_moves.append((row, i))
+            else:
+                if Board[row][i].color != self.color:
+                    self.available_moves.append((row, i))
+                break
+
+        # ligne E col+
+        for i in range(col + 1, len(Board)):
+            if Board[row][i] == 0:
+                self.available_moves.append((row, i))
+            else:
+                if Board[i][col].color != self.color:
+                    self.available_moves.append((row, i))
+                break
+
+        # diagonale NE row- col+
+        row_i = row - 1
+        col_i = col + 1
+
+        while row_i >= 0 and col_i < len(Board):
+            if Board[row_i][col_i] == 0:
+                self.available_moves.append((row_i, col_i))
+
+                row_i -= 1
+                col_i += 1
+            else:
+                if Board[row_i][col_i].color != self.color:
+                    self.available_moves.append((row_i, col_i))
+                break
+
+        # diagonale NO row- col-
+        row_i = row - 1
+        col_i = col - 1
+
+        while row_i >= 0 and col_i >= 0:
+            if Board[row_i][col_i] == 0:
+                self.available_moves.append((row_i, col_i))
+
+                row_i -= 1
+                col_i -= 1
+            else:
+                if Board[row_i][col_i].color != self.color:
+                    self.available_moves.append((row_i, col_i))
+                break
+
+        # diagonale SE row+ col+
+        row_i = row + 1
+        col_i = col + 1
+
+        while row_i < len(Board) and col_i < len(Board):
+            if Board[row_i][col_i] == 0:
+                self.available_moves.append((row_i, col_i))
+
+                row_i += 1
+                col_i += 1
+            else:
+                if Board[row_i][col_i].color != self.color:
+                    self.available_moves.append((row_i, col_i))
+                break
+
+        # diagonale S0 row+ col-
+        row_i = row + 1
+        col_i = col - 1
+
+        while row_i < len(Board) and col_i >= 0:
+            if Board[row_i][col_i] == 0:
+                self.available_moves.append((row_i, col_i))
+
+                row_i += 1
+                col_i -= 1
+            else:
+                if Board[row_i][col_i].color != self.color:
+                    self.available_moves.append((row_i, col_i))
+                break
+
+class King(Piece):
+    def __init__(self, Square, image, color, type, row, col):
+        super().__init__(Square, image, color, type, row, col)
+
+    def get_available_moves(self, Board):
+        self.clear_available_moves()
+
+        row, col = self.row, self.col
+
+        possible_values = (-1, 0, 1)
+        combinations = [(x, y) for x in possible_values for y in possible_values]
+        combinations.remove((0,0))
+
+        for row_, col_ in combinations:
+            print((row+row_,col+col_))
+            if Board[row+row_][col+col_] == 0 | Board[row+row_][col+col_].color != self.color:
+                self.available_moves.append((row+row_,col+col_))
 
