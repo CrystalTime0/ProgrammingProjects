@@ -28,7 +28,7 @@ Black_Queen = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "b
 Black_Rook = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "br.png")), (Square, Square))
 # White pieces
 White_Knight = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wn.png")), (Square, Square))
-White_bishop = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wb.png")), (Square, Square))
+White_Bishop = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wb.png")), (Square, Square))
 White_King = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wk.png")), (Square, Square))
 White_pawn = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wp.png")), (Square, Square))
 White_Queen = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wq.png")), (Square, Square))
