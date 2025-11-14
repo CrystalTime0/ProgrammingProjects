@@ -49,7 +49,7 @@ class Game:
                 return True
 
     # Renvoie une liste de tuple contenant toutes les cases accessibles en 1 coup par l'adversaire
-    def enemies_moves(self, piece, Board) -> list[tuple]:
+    def enemies_moves(self, piece, Board):
         enemies_moves = []
         for r in range(len(Board)):
             for c in range(len(Board.Board[r])):
