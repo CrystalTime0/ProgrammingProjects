@@ -1,4 +1,3 @@
-import pygame
 from Pieces import *
 from constants import *
 

@@ -26,7 +26,7 @@ class Game:
 
     # Recréer un nouveau plateau
     def reset(self):
-        self.Board = NewBoard(Width, Height, Rows, Cols, Square, self.Win)
+        self.Board = NewBoard(Width, Height, Rows, Cols, Square, self.Win, self)
         self.Square = Square
         self.selected = None
 
@@ -47,9 +47,11 @@ class Game:
             else:
                 print("White wins")
                 return True
+        return False
 
     # Renvoie une liste de tuple contenant toutes les cases accessibles en 1 coup par l'adversaire
-    def enemies_moves(self, piece, Board):
+    @staticmethod
+    def enemies_moves(piece, Board):
         enemies_moves = []
         for r in range(len(Board)):
             for c in range(len(Board.Board[r])):
@@ -69,6 +71,8 @@ class Game:
                 if Board.Board[r][c] != 0:
                     if Board.Board[r][c].type == "King" and Board.Board[r][c].color == self.turn:
                         return r, c
+        raise ValueError("The King is un findable")
+
 
     def simulate_move(self, piece, row, col):
         piece_row, piece_col = piece.row, piece.col
@@ -156,12 +160,12 @@ class Game:
         else:
             self.draw_available_moves()
             
-    def get_move_code(self, captured_piece = 0):
+    def get_move_code(self, captured_piece = None):
         code = ""
         piece = self.selected
         code += piece_code[piece.type]
         code += col_name[piece.col] + str(piece.row) 
-        if captured_piece != 0:
+        if captured_piece:
             code += "x"+ col_name[captured_piece.col] + str(captured_piece.row)
         return code
 
@@ -177,7 +181,7 @@ class Game:
                     # histo coups
                     code = self.get_move_code(piece)
                     if self.turn == WHITE:
-                        self.past_moves[self.current_turn] = (code)
+                        self.past_moves[self.current_turn] = code
                     if self.turn == BLACK:
                         self.past_moves[self.current_turn] = (self.past_moves[self.current_turn], code)
                     print(self.past_moves)
