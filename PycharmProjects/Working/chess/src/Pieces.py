@@ -1,9 +1,8 @@
 import pygame
 from constants import *
 
-
 class Piece:
-    def __init__(self, Square, image, color, type, row, col):
+    def __init__(self, Square, image, color, type, row, col, game):
         self.Square = Square
         self.image = image
         self.color = color
@@ -13,13 +12,15 @@ class Piece:
         self.x = 0
         self.y = 0
         self.available_moves = []
+        self.game = game
         self.calc_pos()
 
     def piece_move(self, row, col):
         self.row = row
         self.col = col
         self.calc_pos()
-
+    
+    # Transforme row, col en x, y
     def calc_pos(self):
         self.x = self.col * self.Square
         self.y = self.row * self.Square
@@ -28,10 +29,9 @@ class Piece:
         if len(self.available_moves) > 0:
             self.available_moves = []
 
-
 class Pawn(Piece):
-    def __init__(self, Square, image, color, type, row, col):
-        super().__init__(Square, image, color, type, row, col)
+    def __init__(self, Square, image, color, type, row, col, game):
+        super().__init__(Square, image, color, type, row, col, game)
         self.first_move = True
 
     def get_available_moves(self, Board):
@@ -40,11 +40,13 @@ class Pawn(Piece):
         row, col = self.row, self.col
 
         if self.color == WHITE:
+            # go in front
             if row - 1>= 0:
                 if Board.Board[row - 1][col] == 0:
                     self.available_moves.append((row - 1, col))
                     if self.first_move and Board.Board[row - 2][col] == 0:
                         self.available_moves.append((row - 2, col))
+            # capture
             if col - 1 >= 0:
                 if Board.Board[row - 1][col - 1] != 0:
                     if Board.Board[row - 1][col - 1].color != self.color:
@@ -55,12 +57,24 @@ class Pawn(Piece):
                     if Board.Board[row - 1][col + 1].color != self.color:
                         self.available_moves.append((row - 1, col + 1))
 
+            #TO-DO : En Passant
+            if col - 1 >= 0:
+                if Board.Board[row][col - 1] != 0 and Board.Board[row][col - 1].type == "Pawn":
+                    past_move = self.game.past_moves[self.game.current_turn - 1][1]
+                    code = col_name[str(int(past_move[0]) - 1)] + str(int(past_move[1]) - 2) + col_name[
+                        str(int(past_move[3]) - 1)] + str(int(past_move[3]))
+                    if self.game.past_moves[self.game.current_turn - 1][1].endswith(code):
+                        self.available_moves.append((row - 1, col - 1))
+            
+
         if self.color == BLACK:
+            # go in front
             if row + 1 < len(Board):
                 if Board.Board[row + 1][col] == 0:
                     self.available_moves.append((row + 1, col))
                     if self.first_move and Board.Board[row + 2][col] == 0:
                         self.available_moves.append((row + 2, col))
+            # capture
             if col - 1 >= 0:
                 if Board.Board[row + 1][col - 1] != 0:
                     if Board.Board[row + 1][col - 1].color != self.color:
@@ -70,12 +84,12 @@ class Pawn(Piece):
                     if Board.Board[row + 1][col + 1].color != self.color:
                         self.available_moves.append((row + 1, col + 1))
 
-        # TO-DO : Rajouter En Passant
+            #TO-DO : En Passant
 
 
 class Rook(Piece):
-    def __init__(self, Square, image, color, type, row, col):
-        super().__init__(Square, image, color, type, row, col)
+    def __init__(self, Square, image, color, type, row, col, game):
+        super().__init__(Square, image, color, type, row, col, game)
 
     def get_available_moves(self, Board):
         self.clear_available_moves()
@@ -119,8 +133,8 @@ class Rook(Piece):
                 break
 
 class Knight(Piece):
-    def __init__(self, Square, image, color, type, row, col):
-        super().__init__(Square, image, color, type, row, col)
+    def __init__(self, Square, image, color, type, row, col, game):
+        super().__init__(Square, image, color, type, row, col, game)
 
     def get_available_moves(self, Board):
         self.clear_available_moves()
@@ -157,8 +171,8 @@ class Knight(Piece):
                     self.available_moves.append((row+2, col+1))
 
 class Bishop(Piece):
-    def __init__(self, Square, image, color, type, row, col):
-        super().__init__(Square, image, color, type, row, col)
+    def __init__(self, Square, image, color, type, row, col, game):
+        super().__init__(Square, image, color, type, row, col, game)
 
     def get_available_moves(self, Board):
         self.clear_available_moves()
@@ -226,8 +240,8 @@ class Bishop(Piece):
                 break
 
 class Queen(Piece):
-    def __init__(self, Square, image, color, type, row, col):
-        super().__init__(Square, image, color, type, row, col)
+    def __init__(self, Square, image, color, type, row, col, game):
+        super().__init__(Square, image, color, type, row, col, game)
 
     def get_available_moves(self, Board):
         self.clear_available_moves()
@@ -331,8 +345,8 @@ class Queen(Piece):
                 break
 
 class King(Piece):
-    def __init__(self, Square, image, color, type, row, col):
-        super().__init__(Square, image, color, type, row, col)
+    def __init__(self, Square, image, color, type, row, col, game):
+        super().__init__(Square, image, color, type, row, col, game)
 
     def get_available_moves(self, Board):
         self.clear_available_moves()

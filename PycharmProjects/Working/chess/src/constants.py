@@ -33,3 +33,14 @@ White_King = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wk
 White_pawn = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wp.png")), (Square, Square))
 White_Queen = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wq.png")), (Square, Square))
 White_Rook = pygame.transform.scale(pygame.image.load(os.path.join(IMG_PATH, "wr.png")), (Square, Square))
+
+# piece_code
+piece_code =  {
+    "Pawn": "",
+    "Bishop": "B",
+    "Rook": "R",
+    "King": "K",
+    "Queen": "Q",
+    "Knight": "C",
+    }
+col_name = "abcdefgh"

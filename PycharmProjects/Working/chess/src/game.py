@@ -7,15 +7,15 @@ from constants import *
 class Game:
     def __init__(self, Width, Height, Rows, Cols, Square, Win):
         self.Win = Win
-        self.Board = NewBoard(Width, Height, Rows, Cols, Square, Win)
+        self.Board = NewBoard(Width, Height, Rows, Cols, Square, Win, self)
         self.Square = Square
         self.selected = None
         self.turn = WHITE
         self.valid_moves = []
         self.Black_pieces_left = 16
         self.White_pieces_left = 16
-        ###self.current_turn = 1
-        ###self.past_moves = {}  # {1:("Ke4", "Nxe5")}
+        self.current_turn = 1
+        self.past_moves = {}  # {1:("Ke4", "Nxe5")}
 
     # Afficher les élements
     def update_window(self):
@@ -126,8 +126,9 @@ class Game:
             self.turn = BLACK
         elif self.turn == BLACK:
             self.turn = WHITE
+            self.current_turn += 1
         print(self.turn)
-            ###self.current_turn += 1
+            
 
     def select(self, row, col):
         if self.selected:
@@ -154,6 +155,15 @@ class Game:
             print("new valid_moves", self.valid_moves)
         else:
             self.draw_available_moves()
+            
+    def get_move_code(self, captured_piece = 0):
+        code = ""
+        piece = self.selected
+        code += piece_code[piece.type]
+        code += col_name[piece.col] + str(piece.row) 
+        if captured_piece != 0:
+            code += "x"+ col_name[captured_piece.col] + str(captured_piece.row)
+        return code
 
     def _move(self, row, col):
         piece = self.Board.get_piece(row, col)
@@ -165,8 +175,12 @@ class Game:
                     self.remove(piece, row, col)
                     self.Board.move(self.selected, row, col)
                     # histo coups
-                    ###self.past_moves
-
+                    code = self.get_move_code(piece)
+                    if self.turn == WHITE:
+                        self.past_moves[self.current_turn] = (code)
+                    if self.turn == BLACK:
+                        self.past_moves[self.current_turn] = (self.past_moves[self.current_turn], code)
+                    print(self.past_moves)
                     self.change_turn()
                     print("turn", self.turn)
                     self.valid_moves = []
