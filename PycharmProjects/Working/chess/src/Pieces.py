@@ -57,6 +57,7 @@ class Pawn(Piece):
                         self.available_moves.append((row - 1, col + 1))
 
             #TO-DO : En Passant
+            """
             if col - 1 >= 0:
                 if Board.Board[row][col - 1] != 0 and Board.Board[row][col - 1].type == "Pawn":
                     past_move = self.game.past_moves[self.game.current_turn - 1][1]
@@ -64,6 +65,7 @@ class Pawn(Piece):
                         str(int(past_move[3]) - 1)] + str(int(past_move[3]))
                     if self.game.past_moves[self.game.current_turn - 1][1].endswith(code):
                         self.available_moves.append((row - 1, col - 1))
+            """
             
 
         if self.color == BLACK:
