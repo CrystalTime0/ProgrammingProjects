@@ -21,6 +21,10 @@ class Game:
             for col in range(self.cols):
                 if self.grid[row][col] != 0:
                     self.win.blit(self.font.render(str(self.grid[row][col]),1, BLACK), (row * self.square, col * self.square))
+        for row in range(self.rows):
+            pygame.draw.line(self.win, BLACK, (row * SQUARE,0),(row * SQUARE, HEIGHT))
+        for col in range(self.cols):
+            pygame.draw.line(self.win, BLACK, (0, col * SQUARE),(WIDTH, col * SQUARE))
 
     def change_number(self, number):
         if self.selected:
