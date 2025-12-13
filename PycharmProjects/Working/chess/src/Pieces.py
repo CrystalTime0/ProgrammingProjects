@@ -362,4 +362,3 @@ class King(Piece):
             if len(Board) > row+row_ >= 0 and len(Board) > col + col_ >= 0:
                 if Board.Board[row+row_][col+col_] == 0 or Board.Board[row+row_][col+col_].color != self.color:
                     self.available_moves.append((row+row_,col+col_))
-

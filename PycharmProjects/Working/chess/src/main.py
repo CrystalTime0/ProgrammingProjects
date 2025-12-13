@@ -1,3 +1,5 @@
+import os
+os.system("python data\chess_images\pieces_dowloader.py")
 from constants import *
 from game import Game
 
@@ -13,7 +15,6 @@ def get_positions(x: int, y: int) -> tuple:
 
     return row, col
 
-
 def main() -> None:
     run = True
     game_over = False
@@ -27,6 +28,8 @@ def main() -> None:
             game_over = True
 
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
             if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
                 if pygame.mouse.get_pressed()[0]:
                     location = pygame.mouse.get_pos()
