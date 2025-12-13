@@ -24,7 +24,7 @@ for code, name in pieces.items():
     url = f"{base_url}{code}.png"
     response = requests.get(url)
     if response.status_code == 200:
-        path = f"{os.path.dirname(os.path.abspath(__file__))}\{code}.png"  # Enregistre directement dans le répertoire courant
+        path = f"{os.path.dirname(os.path.abspath(__file__))}/{code}.png"  # Enregistre directement dans le répertoire courant
         if not os.path.exists(path):
             with open(path, "wb") as f:
                 f.write(response.content)

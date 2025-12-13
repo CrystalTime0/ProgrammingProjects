@@ -1,5 +1,6 @@
 import pygame.display
 
+from Pieces import *
 from board import NewBoard
 from constants import *
 
@@ -9,13 +10,14 @@ class Game:
         self.Win = Win
         self.Board = NewBoard(Width, Height, Rows, Cols, Square, Win, self)
         self.Square = Square
-        self.selected = None
+        self.selected: Piece | None = None
         self.turn = WHITE
         self.valid_moves = []
         self.Black_pieces_left = 16
         self.White_pieces_left = 16
         self.current_turn = 1
-        self.past_moves = {}  # {1:("Ke4", "Nxe5")}
+        self.past_moves_code = {}  # {1:("Ke4", "Nxe5")}
+        self.past_moves_usable = {} # {1:((sr, sc), (er, ec))}
 
     # Afficher les élements
     def update_window(self):
@@ -179,12 +181,16 @@ class Game:
                     self.remove(piece, row, col)
                     self.Board.move(self.selected, row, col)
                     # histo coups
+                    #   code
                     code = self.get_move_code(piece)
                     if self.turn == WHITE:
-                        self.past_moves[self.current_turn] = code
+                        self.past_moves_code[self.current_turn] = code
                     if self.turn == BLACK:
-                        self.past_moves[self.current_turn] = (self.past_moves[self.current_turn], code)
-                    print(self.past_moves)
+                        self.past_moves_code[self.current_turn] = (self.past_moves_code[self.current_turn], code)
+                    print(self.past_moves_code)
+                    #   usable
+                    if self.turn == WHITE:
+                        self.past_moves_usable[self.current_turn] = ((self.selected.row,self.selected.col),(,))
                     self.change_turn()
                     print("turn", self.turn)
                     self.valid_moves = []
