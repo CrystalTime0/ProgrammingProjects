@@ -1,5 +1,6 @@
 from constants import *
 from game import Game
+import json
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -36,6 +37,15 @@ def main() -> None:
             if event.type == pygame.KEYDOWN and not game.simulation_on:
                 if event.key in (49, 50, 51, 52, 53, 54, 55, 56, 57):
                     game.next_generations(event.key-48)
+                if event.key == 48:
+                    with open(GRID_PATH, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                    data.append({
+                        "name" : input("quel nom ?"),
+                        "grid" : game.grid.grid
+                                 })
+                    with open(GRID_PATH, "w", encoding="utf-8") as f:
+                        json.dump(data, f)
 
 
 if __name__ == "__main__":

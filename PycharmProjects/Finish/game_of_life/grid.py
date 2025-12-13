@@ -1,5 +1,6 @@
 from constants import *
-
+import os
+import json
 
 # noinspection PyRedundantParentheses
 class NewGrid:
@@ -14,9 +15,18 @@ class NewGrid:
         self.create_grid()
 
     def __len__(self):
-        return len(self.Board)
+        return len(self.grid)
 
     def create_grid(self):
+        if os.path.exists(GRID_PATH):
+            if os.path.getsize(GRID_PATH) > 0:
+                with open(GRID_PATH, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    correspondances = [item["grid"] for item in data if item.get("name") == SAVED_GRID_NAME]
+                    if correspondances:
+                        self.grid = correspondances[0]
+                        return
+
         self.grid = [[0 for _ in range(self.cols)] for _ in range(self.rows)]
 
     def draw_board(self):

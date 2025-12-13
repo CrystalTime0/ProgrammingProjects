@@ -1,8 +1,12 @@
 import pygame
 import os
 
+# Paths
+GRID_PATH = "data/saved_grid.json"
+
 # Configuration
 FPS = 30
+SAVED_GRID_NAME = "Canon_a_Planneur"
 
 # Size
 WIDTH, HEIGHT = 1000, 1000
