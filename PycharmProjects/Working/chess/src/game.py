@@ -79,6 +79,61 @@ class Game:
                         return r, c
         raise ValueError("The King is un findable")
 
+    def create_piece(self, type, color, row, col):
+        if type == "Queen":
+            img = White_Queen if color == WHITE else Black_Queen
+            return Queen(self.Square, img, color, "Queen", row, col, self)
+        elif type == "Rook":
+            img = White_Rook if color == WHITE else Black_Rook
+            return Rook(self.Square, img, color, "Rook", row, col, self)
+        elif type == "Bishop":
+            img = White_Bishop if color == WHITE else Black_Bishop
+            return Bishop(self.Square, img, color, "Bishop", row, col, self)
+        elif type == "Knight":
+            img = White_Knight if color == WHITE else Black_Knight
+            return Knight(self.Square, img, color, "Knight", row, col, self)
+
+    def promote_pawn(self, pawn):
+        # Dimensions de la popup
+        popup_width = self.Square * 4
+        popup_height = self.Square
+        popup_x = Height//2 - 2 * self.Square
+        popup_y = (Width - self.Square)//2 # au-dessus du pion
+
+        # Options de promotion
+        options = ["Queen", "Rook", "Bishop", "Knight"]
+        option_images = [White_Queen, White_Rook, White_Bishop, White_Knight] \
+            if pawn.color == WHITE else [Black_Queen, Black_Rook, Black_Bishop, Black_Knight]
+
+        selecting = True
+        while selecting:
+            self.Win.fill(BEIGE)  # ou redraw le plateau
+            self.Board.draw_board()
+            self.Board.draw_pieces()
+
+            # Dessiner la popup
+            for i, img in enumerate(option_images):
+                rect = pygame.Rect(popup_x + i * self.Square, popup_y, self.Square, self.Square)
+                pygame.draw.rect(self.Win, GREY, rect)
+                self.Win.blit(img, (rect.x, rect.y))
+
+            pygame.display.update()
+
+            # Gestion des événements
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mx, my = pygame.mouse.get_pos()
+                    for i in range(4):
+                        rect = pygame.Rect(popup_x + i * self.Square, popup_y, self.Square, self.Square)
+                        if rect.collidepoint(mx, my):
+                            # Remplacer le pion par la pièce choisie
+                            new_piece_type = options[i]
+                            new_piece = self.create_piece(new_piece_type, pawn.color, pawn.row, pawn.col)
+                            return new_piece
+
     def simulate_move(self, piece, row, col):
         piece_row, piece_col = piece.row, piece.col
         print("piece row, col", piece_row, piece_col)
@@ -165,18 +220,20 @@ class Game:
         else:
             self.draw_available_moves()
 
-    def get_move_code(self, captured_piece=None):
+    def get_move_code(self, start_pos, captured_piece=0):
         code = ""
         piece = self.selected
         code += piece_code[piece.type]
-        code += col_name[piece.col] + str(piece.row)
-        if captured_piece:
+        if captured_piece == 0:
+            code += col_name[piece.col] + str(piece.row+1)
+        else:
+            code += col_name[start_pos[1]] + str(start_pos[0]+1)
             code += "x" + col_name[captured_piece.col] + str(captured_piece.row)
         return code
 
     def _move(self, row, col):
+        promotion = False
         piece = self.Board.get_piece(row, col)
-        print("self selected", self.selected.type)
         if self.selected and (row, col) in self.valid_moves:
             if piece == 0 or piece.color != self.selected.color:
                 print(self.simulate_move(self.selected, row, col))
@@ -202,8 +259,8 @@ class Game:
                         # Marquer le roi comme ayant bougé
                         self.selected.first_move = False
 
-                    # --- Gestion En Passant ---
                     if self.selected.type == "Pawn":
+                        # --- Gestion En Passant ---
                         # Si le pion se déplace en diagonale vers une case vide => En Passant
                         if piece == 0 and col != self.selected.col:
                             # Pion capturé juste derrière
@@ -212,12 +269,18 @@ class Game:
                             captured_piece = self.Board.get_piece(captured_row, captured_col)
                             if captured_piece != 0 and captured_piece.type == "Pawn":
                                 self.remove(captured_piece, captured_row, captured_col)
+
                     self.remove(piece, row, col)
                     self.Board.move(self.selected, row, col)
 
+                    # ----- Promotion -----
+                    if self.Board.Board[row][col].type == "Pawn":
+                        if row == 0 or row == 7:
+                            self.Board.Board[row][col] = self.promote_pawn(self.selected)
+
                     # -----histo coups-----
                     #   code
-                    code = self.get_move_code(piece)
+                    code = self.get_move_code(start_pos, piece)
                     if self.turn == WHITE:
                         self.past_moves_code[self.current_turn] = code
                     if self.turn == BLACK:
