@@ -53,7 +53,6 @@ class Pawn(Piece):
                 if Board.Board[row - 1][col - 1] != 0:
                     if Board.Board[row - 1][col - 1].color != self.color:
                         self.available_moves.append((row - 1, col - 1))
-                        print(self.available_moves)
             if col + 1 < len(Board):
                 if Board.Board[row - 1][col + 1] != 0:
                     if Board.Board[row - 1][col + 1].color != self.color:

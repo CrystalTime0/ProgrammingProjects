@@ -136,8 +136,6 @@ class Game:
 
     def simulate_move(self, piece, row, col):
         piece_row, piece_col = piece.row, piece.col
-        print("piece row, col", piece_row, piece_col)
-        print(row, col)
         save_piece = self.Board.Board[row][col]
         if self.Board.Board[row][col] != 0:
             self.Board.Board[row][col] = 0
@@ -164,7 +162,6 @@ class Game:
                 if Board.Board[r][c] != 0:
                     if Board.Board[r][c].color == self.turn and Board.Board[r][c].type != "King":
                         moves = Board.Board[r][c].get_available_moves(Board)
-                        # print(self.Board.Board[r][c].type, moves)
                         if moves:
                             for move in moves:
                                 possible_moves.append(move)
@@ -211,20 +208,20 @@ class Game:
     def change_turn(self):
         if self.turn == WHITE:
             self.turn = BLACK
+            print("BLACK TURN".center(24, "-"))
         elif self.turn == BLACK:
             self.turn = WHITE
             self.current_turn += 1
+            print("WHITE TURN".center(24, "-"))
         self.total_turn += 1
-        print(self.turn)
+
 
     def select(self, row, col):
         if self.selected:
-            # print("selected")
 
             move = self._move(row, col)
 
             if not move:
-                # print("in not move")
                 self.selected = None
                 self.select(row, col)
 
@@ -235,11 +232,8 @@ class Game:
         if piece != 0 and self.turn == piece.color:
             self.selected = piece
             self.draw_available_moves()
-            # print(piece)
             piece.get_available_moves(self.Board)
             self.valid_moves = piece.available_moves
-            print("self valid_moves", self.valid_moves)
-            print("new valid_moves", self.valid_moves)
         else:
             self.draw_available_moves()
 
@@ -259,7 +253,6 @@ class Game:
         piece = self.Board.get_piece(row, col)
         if self.selected and (row, col) in self.valid_moves:
             if piece == 0 or piece.color != self.selected.color:
-                print(self.simulate_move(self.selected, row, col))
                 if self.simulate_move(self.selected, row, col):
                     start_pos = (self.selected.row, self.selected.col)
                     end_pos = (row, col)
@@ -313,7 +306,6 @@ class Game:
                     self.past_moves_usable[self.total_turn] = (start_pos, end_pos)
 
                     self.change_turn()
-                    print("turn", self.turn)
                     self.valid_moves = []
                     self.selected = None
 
