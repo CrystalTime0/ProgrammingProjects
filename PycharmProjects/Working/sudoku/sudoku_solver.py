@@ -1,6 +1,7 @@
 def validate(line: list):
     return sorted(line) == [x for x in range(1, 10)]
 
+
 class RowsVerifier:
     def __init__(self, grid):
         self.grid = grid
@@ -10,6 +11,7 @@ class RowsVerifier:
             if not validate(row):
                 return False
         return True
+
 
 class ColsVerifier:
     def __init__(self, grid):
@@ -23,6 +25,7 @@ class ColsVerifier:
             if not validate(col):
                 return False
         return True
+
 
 class SquareVerifier:
     def __init__(self, grid):
@@ -38,6 +41,7 @@ class SquareVerifier:
                 if not validate(square):
                     return False
         return True
+
 
 class SudokuVerifier:
     def __init__(self, grid):

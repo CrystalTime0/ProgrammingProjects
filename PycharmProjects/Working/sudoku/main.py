@@ -30,9 +30,11 @@ def main() -> None:
                     # print(row,col)
                     game.select(row, col)
             if event.type == pygame.KEYDOWN:
-                if event.key in [49,50,51,52,53,54,55,56,57,48]:
-                    game.change_number(event.key-48)
+                if event.key in [49, 50, 51, 52, 53, 54, 55, 56, 57, 48]:
+                    game.change_number(event.key - 48)
                 if event.key == 13:
                     print(game.check())
+
+
 if __name__ == "__main__":
     main()
