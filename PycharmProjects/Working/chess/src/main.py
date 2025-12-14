@@ -1,5 +1,5 @@
 import os
-os.system("python data/chess_images/pieces_dowloader.py")
+os.system("python data/chess_images/pieces_downloader.py")
 from constants import *
 from game import Game
 
