@@ -3,6 +3,7 @@ import pygame.display
 from Pieces import *
 from board import NewBoard
 from constants import *
+from algos.minmax.minmax import MinMax
 
 
 class Game:
@@ -19,6 +20,7 @@ class Game:
         self.total_turn = 1
         self.past_moves_code = {}  # {1:("Ke4", "Nxe5")}
         self.past_moves_usable = {}  # {1:((sr, sc), (er, ec))}
+        self.ia = MinMax()
 
     # Afficher les élements
     def update_window(self):
@@ -95,10 +97,8 @@ class Game:
 
     def promote_pawn(self, pawn):
         # Dimensions de la popup
-        popup_width = self.Square * 4
-        popup_height = self.Square
-        popup_x = Height//2 - 2 * self.Square
-        popup_y = (Width - self.Square)//2 # au-dessus du pion
+        popup_x = Height // 2 - 2 * self.Square
+        popup_y = (Width - self.Square) // 2  # au-dessus du pion
 
         # Options de promotion
         options = ["Queen", "Rook", "Bishop", "Knight"]
@@ -160,7 +160,7 @@ class Game:
         for r in range(len(Board)):
             for c in range(len(Board.Board[r])):
                 if Board.Board[r][c] != 0:
-                    if Board.Board[r][c].color == self.turn and Board.Board[r][c].type != "King":
+                    if Board.Board[r][c].color == self.turn:
                         moves = Board.Board[r][c].get_available_moves(Board)
                         if moves:
                             for move in moves:
@@ -205,16 +205,23 @@ class Game:
         # Aucun mouvement légal pour le roi ni aucune pièce ne peut sauver → mat
         return True
 
+    def ia_play(self):
+        pass
+
     def change_turn(self):
         if self.turn == WHITE:
             self.turn = BLACK
             print("BLACK TURN".center(24, "-"))
+            ia_move = self.ia.next_move(self.Board, 3, self)
+            print("MinMax joue : ", ia_move)
+            ia_start_pos, ia_end_pos = ia_move
+            self.select(ia_start_pos[0], ia_start_pos[1])
+            self.select(ia_end_pos[0], ia_end_pos[1])
         elif self.turn == BLACK:
             self.turn = WHITE
             self.current_turn += 1
             print("WHITE TURN".center(24, "-"))
         self.total_turn += 1
-
 
     def select(self, row, col):
         if self.selected:
@@ -242,14 +249,13 @@ class Game:
         piece = self.selected
         code += piece_code[piece.type]
         if captured_piece == 0:
-            code += col_name[piece.col] + str(piece.row+1)
+            code += col_name[piece.col] + str(piece.row + 1)
         else:
-            code += col_name[start_pos[1]] + str(start_pos[0]+1)
+            code += col_name[start_pos[1]] + str(start_pos[0] + 1)
             code += "x" + col_name[captured_piece.col] + str(captured_piece.row)
         return code
 
     def _move(self, row, col):
-        promotion = False
         piece = self.Board.get_piece(row, col)
         if self.selected and (row, col) in self.valid_moves:
             if piece == 0 or piece.color != self.selected.color:
@@ -304,10 +310,10 @@ class Game:
                     print(self.past_moves_code)
                     #   usable
                     self.past_moves_usable[self.total_turn] = (start_pos, end_pos)
-
-                    self.change_turn()
                     self.valid_moves = []
                     self.selected = None
+                    self.update_window()
+                    self.change_turn()
 
                     return True
                 return False

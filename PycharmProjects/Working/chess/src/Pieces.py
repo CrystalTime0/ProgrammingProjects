@@ -1,5 +1,5 @@
 from constants import *
-
+import copy
 
 class Piece:
     def __init__(self, Square, image, color, type, row, col, game):
@@ -28,6 +28,28 @@ class Piece:
     def clear_available_moves(self):
         if len(self.available_moves) > 0:
             self.available_moves = []
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        copy_obj = cls.__new__(cls)
+        memo[id(self)] = copy_obj
+
+        # Copier uniquement les attributs nécessaires pour MinMax
+        copy_obj.Square = self.Square
+        copy_obj.image = self.image  # garder la même image Pygame
+        copy_obj.color = self.color
+        copy_obj.row = self.row
+        copy_obj.col = self.col
+        copy_obj.type = self.type
+        copy_obj.x = self.x
+        copy_obj.y = self.y
+        copy_obj.available_moves = self.available_moves.copy()
+        copy_obj.first_move = getattr(self, "first_move", False)
+
+        # Références circulaires → ne pas copier game
+        copy_obj.game = None
+
+        return copy_obj
 
 
 class Pawn(Piece):
@@ -478,3 +500,4 @@ class King(Piece):
                 if target == 0 or target.color != self.color:
                     attack_squares.append((nr, nc))
         return attack_squares
+

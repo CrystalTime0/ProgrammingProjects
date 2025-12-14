@@ -1,6 +1,7 @@
 from Pieces import *
 from constants import *
 
+import copy
 
 # noinspection PyRedundantParentheses
 class NewBoard:
@@ -78,3 +79,19 @@ class NewBoard:
             for col in range(self.Cols):
                 if self.Board[row][col] != 0:
                     self.draw_piece(self.Board[row][col], self.Win)
+
+    def __deepcopy__(self, memo):
+        cls = self.__class__
+        copy_board = cls.__new__(cls)
+        memo[id(self)] = copy_board
+
+        # Copier la grille
+        copy_board.Board = [[copy.deepcopy(p, memo) if p != 0 else 0 for p in row] for row in self.Board]
+
+        # Copier les autres attributs
+        copy_board.Rows = self.Rows
+        copy_board.Cols = self.Cols
+        copy_board.Square = self.Square
+        copy_board.Win = self.Win  # surfaces pygame restent les mêmes
+
+        return copy_board
