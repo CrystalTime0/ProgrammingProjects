@@ -36,7 +36,7 @@ class MinMax:
         value += len(self.possible_moves(board, WHITE))
         return value
 
-    def minimax(self, board, depth, maximizing, original_game):
+    def minimax(self, board, depth, alpha, beta, maximizing, original_game):
         if depth == 0:
             return self.evaluate(board)
 
@@ -47,42 +47,45 @@ class MinMax:
             return self.evaluate(board)
 
         if maximizing:
-            best = float('-inf')
+            max_eval = float('-inf')
             for start, end in moves:
                 tmp = copy.deepcopy(board)
-                # Réassigner game pour toutes les pièces
                 for row in tmp.Board:
                     for piece in row:
                         if piece != 0:
                             piece.game = original_game
-                grid = tmp.Board
 
-                grid[end[0]][end[1]] = grid[start[0]][start[1]]
-                grid[start[0]][start[1]] = 0
+                tmp.Board[end[0]][end[1]] = tmp.Board[start[0]][start[1]]
+                tmp.Board[start[0]][start[1]] = 0
 
-                best = max(best, self.minimax(tmp, depth - 1, False, original_game))
-            return best
+                eval = self.minimax(tmp, depth - 1, alpha, beta, False, original_game)
+                max_eval = max(max_eval, eval)
+                alpha = max(alpha, eval)
+                if beta <= alpha:
+                    break  # pruning
+            return max_eval
         else:
-            best = float('inf')
+            min_eval = float('inf')
             for start, end in moves:
                 tmp = copy.deepcopy(board)
-                # Réassigner game pour toutes les pièces
                 for row in tmp.Board:
                     for piece in row:
                         if piece != 0:
                             piece.game = original_game
 
-                grid = tmp.Board
+                tmp.Board[end[0]][end[1]] = tmp.Board[start[0]][start[1]]
+                tmp.Board[start[0]][start[1]] = 0
 
-                grid[end[0]][end[1]] = grid[start[0]][start[1]]
-                grid[start[0]][start[1]] = 0
-
-                best = min(best, self.minimax(tmp, depth - 1, True, original_game))
-            return best
+                eval = self.minimax(tmp, depth - 1, alpha, beta, True, original_game)
+                min_eval = min(min_eval, eval)
+                beta = min(beta, eval)
+                if beta <= alpha:
+                    break  # pruning
+            return min_eval
 
     def next_move(self, board, depth, original_game):
         best_move = None
-        best_value = float('inf')  # IA joue BLACK → minimise
+        best_value = float('inf')  # l’IA joue noir → minimise
 
         moves = self.possible_moves(board, BLACK)
         if not moves:
@@ -90,20 +93,15 @@ class MinMax:
 
         for start, end in moves:
             tmp = copy.deepcopy(board)
-
-            # Réassigner game pour toutes les pièces copiées
             for row in tmp.Board:
                 for piece in row:
                     if piece != 0:
-                        piece.game = original_game  # référence vers le Game réel
+                        piece.game = original_game
 
-            # Simuler le coup
-            grid = tmp.Board
-            grid[end[0]][end[1]] = grid[start[0]][start[1]]
-            grid[start[0]][start[1]] = 0
+            tmp.Board[end[0]][end[1]] = tmp.Board[start[0]][start[1]]
+            tmp.Board[start[0]][start[1]] = 0
 
-            # Appeler minimax sur le plateau simulé
-            value = self.minimax(tmp, depth - 1, True, original_game)
+            value = self.minimax(tmp, depth - 1, float('-inf'), float('inf'), True, original_game)
 
             if value < best_value:
                 best_value = value

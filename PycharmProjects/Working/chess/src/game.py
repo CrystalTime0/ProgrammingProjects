@@ -217,6 +217,8 @@ class Game:
             ia_start_pos, ia_end_pos = ia_move
             self.select(ia_start_pos[0], ia_start_pos[1])
             self.select(ia_end_pos[0], ia_end_pos[1])
+            self.selected = None
+            self.update_window()
         elif self.turn == BLACK:
             self.turn = WHITE
             self.current_turn += 1
