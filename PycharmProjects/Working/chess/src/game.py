@@ -172,18 +172,41 @@ class Game:
         return possible_moves
 
     def checkmate(self, Board):
-        king_pos = self.get_king_pos(Board)
-        get_king = Board.get_piece(king_pos[0], king_pos[1])
-        get_king.get_available_moves(Board)
-        king_available_moves = set(get_king.available_moves)
-        enemies_moves_set = set(self.enemies_moves(get_king.color, Board))
-        king_moves = king_available_moves - enemies_moves_set
-        set1 = king_available_moves.intersection(enemies_moves_set)
-        possible_moves_to_def = set1.intersection(self.possible_moves(Board))
-        if len(king_moves) == 0 and len(king_available_moves) != 0 and possible_moves_to_def == 0:
-            return True
+        king_row, king_col = self.get_king_pos(Board)
+        king = Board.get_piece(king_row, king_col)
 
-        return False
+        # Récupérer les mouvements légaux du roi
+        king.get_available_moves(Board)
+        if king.available_moves:
+            # Le roi peut encore bouger → pas de mat
+            return False
+
+        # Vérifier si une autre pièce peut sauver le roi
+        for r in range(len(Board.Board)):
+            for c in range(len(Board.Board[r])):
+                piece = Board.Board[r][c]
+                if piece != 0 and piece.color == king.color and piece.type != "King":
+                    piece.get_available_moves(Board)
+                    for move in piece.available_moves:
+                        # Simuler le coup
+                        orig_row, orig_col = piece.row, piece.col
+                        captured_piece = Board.Board[move[0]][move[1]]
+                        Board.Board[move[0]][move[1]] = piece
+                        Board.Board[orig_row][orig_col] = 0
+                        piece.row, piece.col = move
+
+                        king_safe = not self.is_square_attacked(king_row, king_col, king.color)
+
+                        # Restaurer
+                        Board.Board[orig_row][orig_col] = piece
+                        Board.Board[move[0]][move[1]] = captured_piece
+                        piece.row, piece.col = orig_row, orig_col
+
+                        if king_safe:
+                            return False  # Le roi peut être sauvé
+
+        # Aucun mouvement légal pour le roi ni aucune pièce ne peut sauver → mat
+        return True
 
     def change_turn(self):
         if self.turn == WHITE:

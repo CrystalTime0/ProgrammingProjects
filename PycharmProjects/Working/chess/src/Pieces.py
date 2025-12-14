@@ -439,8 +439,21 @@ class King(Piece):
         for row_, col_ in combinations:
             if len(Board) > row + row_ >= 0 and len(Board) > col + col_ >= 0:
                 if Board.Board[row + row_][col + col_] == 0 or Board.Board[row + row_][col + col_].color != self.color:
+                    # Simuler le déplacement du roi
+                    orig_row, orig_col = self.row, self.col
+                    captured_piece = Board.Board[row + row_][col + col_]
+                    Board.Board[row + row_][col + col_] = self
+                    Board.Board[orig_row][orig_col] = 0
+                    self.row, self.col = row + row_, col + col_
+
+                    # Vérifier si le roi est attaqué après le déplacement
                     if ignore_checks or not self.game.is_square_attacked(row + row_, col + col_, self.color):
                         self.available_moves.append((row + row_, col + col_))
+
+                    # Restaurer l'état initial
+                    Board.Board[orig_row][orig_col] = self
+                    Board.Board[row + row_][col + col_] = captured_piece
+                    self.row, self.col = orig_row, orig_col
 
         if self.first_move and not ignore_checks:
             if not self.game.is_square_attacked(row, col, self.color):
