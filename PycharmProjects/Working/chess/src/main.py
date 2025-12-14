@@ -15,6 +15,7 @@ def get_positions(x: int, y: int) -> tuple:
 
     return row, col
 
+
 def main() -> None:
     run = True
     game_over = False
@@ -36,6 +37,7 @@ def main() -> None:
                     row, col = get_positions(location[0], location[1])
                     # print(row,col)
                     game.select(row, col)
+
 
 if __name__ == "__main__":
     main()
