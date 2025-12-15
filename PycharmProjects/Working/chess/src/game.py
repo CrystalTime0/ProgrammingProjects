@@ -1,26 +1,34 @@
+import time
+
 import pygame.display
 
 from Pieces import *
 from board import NewBoard
 from constants import *
-from algos.minmax.minmax import MinMax
 
+# IA
+from algos.minmax.minmax import MinMax
+from algos.stockfish_engine.stockfish_engine import StockfishEngine
 
 class Game:
     def __init__(self, Width, Height, Rows, Cols, Square, Win):
         self.Win = Win
         self.Board = NewBoard(Width, Height, Rows, Cols, Square, Win, self)
-        self.Square = Square
+        self.Square: int = Square
         self.selected: Piece | None = None
-        self.turn = WHITE
-        self.valid_moves = []
-        self.Black_pieces_left = 16
-        self.White_pieces_left = 16
-        self.current_turn = 1
-        self.total_turn = 1
-        self.past_moves_code = {}  # {1:("Ke4", "Nxe5")}
-        self.past_moves_usable = {}  # {1:((sr, sc), (er, ec))}
-        self.ia = MinMax()
+        self.turn: tuple = WHITE
+        self.valid_moves: list[tuple[int]] = []
+        self.Black_pieces_left: int = 16
+        self.White_pieces_left: int = 16
+        self.current_turn: int = 1
+        self.total_turn: int = 1
+        self.past_moves_code: dict[int:tuple[str]] = {}  # {1:("Ke4", "Nxe5")}
+        self.past_moves_usable: dict[int:tuple[tuple[int]]] = {}  # {1:((sr, sc), (er, ec))}
+        self.nb_moves_from_last_capture: int = 0
+
+        self.minmax = MinMax()
+        self.stockfish = StockfishEngine(self, contempt=0, skill_level=20, ignore_skill="false", elo=1350)
+        self.ia: str | None = "stockfish"
 
     # Afficher les élements
     def update_window(self):
@@ -206,19 +214,26 @@ class Game:
         return True
 
     def ia_play(self):
-        pass
+        ia_move = None
+        if self.ia == "MinMax":
+            ia_move = self.minmax.next_move(self.Board, 3, self)
+        elif self.ia == "stockfish":
+            ia_move = self.stockfish.next_move()
+
+        print(f"{self.ia} joue : ", ia_move)
+
+        ia_start_pos, ia_end_pos = ia_move
+        self.select(ia_start_pos[0], ia_start_pos[1])
+        self.select(ia_end_pos[0], ia_end_pos[1])
+        self.selected = None
+        self.update_window()
 
     def change_turn(self):
         if self.turn == WHITE:
             self.turn = BLACK
             print("BLACK TURN".center(24, "-"))
-            ia_move = self.ia.next_move(self.Board, 3, self)
-            print("MinMax joue : ", ia_move)
-            ia_start_pos, ia_end_pos = ia_move
-            self.select(ia_start_pos[0], ia_start_pos[1])
-            self.select(ia_end_pos[0], ia_end_pos[1])
-            self.selected = None
-            self.update_window()
+            if self.ia:
+                self.ia_play()
         elif self.turn == BLACK:
             self.turn = WHITE
             self.current_turn += 1
@@ -251,7 +266,7 @@ class Game:
         piece = self.selected
         code += piece_code[piece.type]
         if captured_piece == 0:
-            code += col_name[piece.col] + str(piece.row + 1)
+            code += col_name[abs(piece.col-7)] + str(abs(piece.row - 7)+1)
         else:
             code += col_name[start_pos[1]] + str(start_pos[0] + 1)
             code += "x" + col_name[captured_piece.col] + str(captured_piece.row)
@@ -269,15 +284,17 @@ class Game:
                     # Si le roi se déplace de 2 cases → roque
                     if self.selected.type == "King" and abs(col - self.selected.col) == 2:
                         row = self.selected.row
-                        # Roque court
-                        if col < self.selected.col:
-                            rook = self.Board.Board[row][self.selected.col - 3]
-                            self.Board.move(rook, row, col + 1)
+
+                        # PETIT ROQUE (roi va à droite)
+                        if col > self.selected.col:
+                            rook = self.Board.Board[row][7]  # tour en h
+                            self.Board.move(rook, row, col - 1)  # tour va en f
                             rook.first_move = False
-                        # Roque long
+
+                        # GRAND ROQUE (roi va à gauche)
                         else:
-                            rook = self.Board.Board[row][self.selected.col + 4]
-                            self.Board.move(rook, row, col - 1)
+                            rook = self.Board.Board[row][0]  # tour en a
+                            self.Board.move(rook, row, col + 1)  # tour va en d
                             rook.first_move = False
 
                         # Marquer le roi comme ayant bougé
@@ -293,6 +310,11 @@ class Game:
                             captured_piece = self.Board.get_piece(captured_row, captured_col)
                             if captured_piece != 0 and captured_piece.type == "Pawn":
                                 self.remove(captured_piece, captured_row, captured_col)
+
+                    if piece == 0:
+                        self.nb_moves_from_last_capture += 1
+                    if piece != 0 and piece.color != self.selected.color:
+                        self.nb_moves_from_last_capture = 0
 
                     self.remove(piece, row, col)
                     self.Board.move(self.selected, row, col)

@@ -423,28 +423,28 @@ class King(Piece):
     def can_castle_kingside(self, Board):
         row, col = self.row, self.col
         # Vérifier que les cases entre roi et tour sont vides
-        if Board.Board[row][col - 1] != 0 or Board.Board[row][col - 2] != 0:
+        if Board.Board[row][col + 1] != 0 or Board.Board[row][col + 2] != 0:
             return False
         # Vérifier que la tour n’a pas bougé
-        rook = Board.Board[row][col - 3]
+        rook = Board.Board[row][col + 3]
         if rook == 0 or rook.type != "Rook" or not rook.first_move:
             return False
         # Vérifier que le roi ne passe pas par des cases attaquées
-        if self.game.is_square_attacked(row, col - 1, self.color) or self.game.is_square_attacked(row, col - 2, self.color):
+        if self.game.is_square_attacked(row, col + 1, self.color) or self.game.is_square_attacked(row, col + 2, self.color):
             return False
         return True
 
     def can_castle_queenside(self, Board):
         row, col = self.row, self.col
         # Vérifier que les cases entre roi et tour sont vides
-        if Board.Board[row][col + 1] != 0 or Board.Board[row][col + 2] != 0 or Board.Board[row][col + 3] != 0:
+        if Board.Board[row][col - 1] != 0 or Board.Board[row][col - 2] != 0 or Board.Board[row][col - 3] != 0:
             return False
         # Vérifier que la tour n’a pas bougé
-        rook = Board.Board[row][col + 4]
+        rook = Board.Board[row][col - 4]
         if rook == 0 or rook.type != "Rook" or not rook.first_move:
             return False
         # Vérifier que le roi ne passe pas par des cases attaquées
-        if self.game.is_square_attacked(row, col + 1, self.color) or self.game.is_square_attacked(row, col + 2, self.color):
+        if self.game.is_square_attacked(row, col - 1, self.color) or self.game.is_square_attacked(row, col - 2, self.color):
             return False
         return True
 
@@ -480,11 +480,11 @@ class King(Piece):
             if not self.game.is_square_attacked(row, col, self.color):
                 # ROQUE COURT (vers la gauche)
                 if self.can_castle_kingside(Board):
-                    self.available_moves.append((row, col - 2))
+                    self.available_moves.append((row, col + 2))
 
                 # ROQUE LONG (vers la droite)
                 if self.can_castle_queenside(Board):
-                    self.available_moves.append((row, col + 2))
+                    self.available_moves.append((row, col - 2))
 
     def get_attack_squares(self, Board):
         self.clear_available_moves()

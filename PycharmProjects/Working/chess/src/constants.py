@@ -43,4 +43,12 @@ piece_code = {
     "Queen": "Q",
     "Knight": "C",
 }
-col_name = "abcdefgh"
+PIECE_TO_FEN = {
+    "King": "k",
+    "Queen": "q",
+    "Rook": "r",
+    "Bishop": "b",
+    "Knight": "n",
+    "Pawn": "p"
+}
+col_name = "hgfedcba"
