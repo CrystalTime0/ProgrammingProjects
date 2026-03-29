@@ -14,7 +14,7 @@ def main() -> None:
     labyrinthe = Labyrinthe(Win)
     solver = Solver(Win, labyrinthe.labyrinthe)
     solver.solve("heat_map")
-    labyrinthe.draw_labyrinthe_walls(WHITE)
+    labyrinthe.draw_labyrinthe_walls(BLACK)
     solver.draw_solution()
 
 

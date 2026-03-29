@@ -1,5 +1,6 @@
 import pygame
 from constants import *
+from utils import make_heat_to_rgb
 
 class Solver:
     def __init__(self, win, labyrinthe):
@@ -49,12 +50,10 @@ class Solver:
             last_cells = list(new_cells)
             new_cells = []
             heat += 1
-        max_heat = max(heat_map.values())
-        max_heat = min(max_heat, 255)
-        heat_color_value = 255 // max_heat
+        heat_to_rgb = make_heat_to_rgb(list(heat_map.values()))
         for cell, heat in heat_map.items():
-            heat = min(heat, 255)
-            pygame.draw.rect(self.win, (255 - heat_color_value * heat, 0, heat_color_value * heat), (cell[0] * SQUARE, cell[1] * SQUARE, SQUARE, SQUARE))
+            color = heat_to_rgb(heat)
+            pygame.draw.rect(self.win, color, (cell[0] * SQUARE, cell[1] * SQUARE, SQUARE, SQUARE))
             # self.win.blit(self.font.render(str(heat), False, WHITE), (cell[0] * SQUARE, cell[1] * SQUARE))
 
         solution = [(0, 0)]

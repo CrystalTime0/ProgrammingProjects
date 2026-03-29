@@ -59,4 +59,4 @@ class Labyrinthe:
 
                         p1 = (wall_pos[0][0] * SQUARE, wall_pos[0][1] * SQUARE)
                         p2 = (wall_pos[1][0] * SQUARE, wall_pos[1][1] * SQUARE)
-                        pygame.draw.line(self.win, color, p1, p2)
+                        pygame.draw.line(self.win, color, p1, p2, 2)

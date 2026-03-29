@@ -27,7 +27,7 @@ class Game:
         self.nb_moves_from_last_capture: int = 0
 
         self.minmax = MinMax()
-        self.stockfish = StockfishEngine(self, contempt=0, skill_level=20, ignore_skill="false", elo=1350)
+        self.stockfish = StockfishEngine(self, contempt=0, skill_level=20, ignore_skill="false", elo=3000)
         self.ia: str | None = "stockfish"
 
     # Afficher les élements
