@@ -134,3 +134,24 @@ class Player:
                     self.y = (int(self.y) // TILE_SIZE + 1) * TILE_SIZE
                     self.vy = 0
                     break
+
+
+class App:
+    def __init__(self):
+        pyxel.init(128, 128, "Exercice 7 — Physique de plateforme complète", 30)
+        pyxel.load("ress/Ex_8.pyxres")
+        # Vars
+        self.player = Player(8, 32)
+
+        pyxel.run(self.update, self.draw)
+
+    def update(self):
+        self.player.update()
+
+    def draw(self):
+        pyxel.cls(0)
+        pyxel.bltm(0,0,0,0,0, pyxel.width, pyxel.height)
+        self.player.draw()
+
+
+App()
