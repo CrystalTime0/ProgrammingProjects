@@ -7,7 +7,7 @@ GRAVITE_CHUTE = 0.7
 GRAVITE_MUR = 0.3
 VITESSE_MAX = 8.0
 
-TILE_SIZE = 16
+TILE_SIZE = 8
 XVI_SOLIDS_TILES = [(0,0), (1,0)]
 VIII_SOLIDES_TILES = [(tile[0]*2+decal[0], tile[1]*2+decal[1]) for decal in ((0,0), (1,0), (0,1), (1,1)) for tile in XVI_SOLIDS_TILES]
 print(VIII_SOLIDES_TILES)
@@ -77,44 +77,40 @@ class Player:
         solid = pyxel.tilemaps[0].pget(px // 8, py // 8) in VIII_SOLIDES_TILES
         return solid
 
-    def _deplacer_et_collider(self, largeur=16, hauteur=16):
-        # ── Axe X d'abord ──
+    def _deplacer_et_collider(self, largeur=4, hauteur=8):
+        # ── Axe X ──
         self.x += self.vx
-        if self.vx > 0:  # on va à droite : tester le bord droit
-            for dy in range(hauteur):  # tester en haut et en bas du personnage
-                if self._is_solid_at(int(self.x) + largeur, int(self.y) + dy):
+        self.sur_mur = False  # reset ici, plus besoin du else sur le for
+
+        if self.vx > 0:  # bord droit
+            for dy in range(hauteur):
+                if self._is_solid_at(int(self.x + largeur), int(self.y) + dy):
                     self.x = (int(self.x + largeur) // TILE_SIZE) * TILE_SIZE - largeur
                     self.vx = 0
-                    if not self.sur_mur:
-                        self.vy = 0
                     self.sur_mur = True
                     break
-            else:
-                self.sur_mur = False
 
-        elif self.vx < 0:  # on va à gauche : tester le bord gauche
+        elif self.vx < 0:  # bord gauche
             for dy in range(hauteur):
                 if self._is_solid_at(int(self.x), int(self.y) + dy):
                     self.x = (int(self.x) // TILE_SIZE + 1) * TILE_SIZE
                     self.vx = 0
-                    if not self.sur_mur:
-                        self.vy = 0
                     self.sur_mur = True
                     break
-            else:
-                self.sur_mur = False
 
-        # ── Axe Y ensuite ──
+        # ── Axe Y ──
         self.y += self.vy
-        if self.vy > 0:  # on tombe : tester le sol
-            for dx in [1, largeur - 1]:
-                if self._is_solid_at(int(self.x) + dx, int(self.y) + hauteur):
+
+        if self.vy > 0:  # sol
+            for dx in [0, largeur - 1]:
+                if self._is_solid_at(int(self.x) + dx, int(self.y + hauteur)):
                     self.y = (int(self.y + hauteur) // TILE_SIZE) * TILE_SIZE - hauteur
                     self.vy = 0
                     self.au_sol = True
                     break
-        elif self.vy < 0:  # on monte : tester le plafond
-            for dx in [1, largeur - 1]:
+
+        elif self.vy < 0:  # plafond
+            for dx in [0, largeur - 1]:
                 if self._is_solid_at(int(self.x) + dx, int(self.y)):
                     self.y = (int(self.y) // TILE_SIZE + 1) * TILE_SIZE
                     self.vy = 0
