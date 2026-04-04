@@ -1,11 +1,11 @@
 import pyxel
 
 VITESSE_DE_DEPLACEMENT = 2.0
-VITESSE_DE_SAUT        = -5.0
-VITESSE_WALL_JUMP_X    = 3.0   # impulsion horizontale au wall jump
+VITESSE_DE_SAUT        = -4.0
+VITESSE_WALL_JUMP_X    = 1.5   # impulsion horizontale au wall jump
 GRAVITE                = 0.4
-GRAVITE_CHUTE          = 0.7
-GRAVITE_MUR            = 0.2   # glisse plus lentement sur le mur
+GRAVITE_CHUTE          = 0.5
+GRAVITE_MUR            = 0.1   # glisse plus lentement sur le mur
 VITESSE_MAX            = 8.0
 TILE_SIZE              = 8     # cohérent avec pget(px // 8)
 
@@ -27,7 +27,6 @@ class Player:
         self.sur_mur         = False
         self.direction_mur   = 0    # +1 = mur à droite, -1 = mur à gauche
         self.coyote_timer    = 0
-        self.wall_coyote_timer = 0
         self.wall_jump_timer = 0    # bloque l'input pendant l'éjection
 
     def update(self):
@@ -35,7 +34,7 @@ class Player:
         # Pendant un wall jump, on préserve l'impulsion ; l'input est ignoré
         if self.wall_jump_timer > 0:
             self.wall_jump_timer -= 1
-        else:
+        elif not self.sur_mur:
             self.vx = 0
             if pyxel.btn(pyxel.KEY_D): self.vx =  VITESSE_DE_DEPLACEMENT
             if pyxel.btn(pyxel.KEY_Q): self.vx = -VITESSE_DE_DEPLACEMENT
@@ -46,16 +45,11 @@ class Player:
         elif self.coyote_timer > 0:
             self.coyote_timer -= 1
 
-        if self.sur_mur:
-            self.wall_coyote_timer = 8
-        elif self.wall_coyote_timer > 0:
-            self.wall_coyote_timer -= 1
-
         # ── Logique de saut ───────────────────────────────────
         # Séparation claire : saut sol vs wall jump
         peut_sauter_sol  = self.au_sol or self.coyote_timer > 0
         peut_wall_jump   = (
-            (self.sur_mur or self.wall_coyote_timer > 0)
+            self.sur_mur
             and self.wall_jump_timer == 0
             and not self.au_sol          # évite le wall jump en touchant sol+mur
         )
@@ -69,12 +63,11 @@ class Player:
                 self.vy = VITESSE_DE_SAUT
                 # Éjection horizontale opposée au mur
                 self.vx = -self.direction_mur * VITESSE_WALL_JUMP_X
-                self.wall_jump_timer   = 14   # frames où l'input est gelé
-                self.wall_coyote_timer = 0
+                self.wall_jump_timer   = 10   # frames où l'input est gelé
 
         # ── Gravité ───────────────────────────────────────────
         if self.sur_mur and self.vy > 0:
-            self.vy += GRAVITE_MUR      # glisse lentement sur le mur
+            self.vy = self.vy * 1.02 + GRAVITE_MUR      # glisse lentement sur le mur
         elif self.vy > 0:
             self.vy += GRAVITE_CHUTE    # chute rapide
         else:
@@ -104,7 +97,7 @@ class Player:
                 if self._is_solid_at(int(self.x + largeur), int(self.y) + dy):
                     self.x = (int(self.x + largeur) // TILE_SIZE) * TILE_SIZE - largeur
                     self.vx = 0
-                    self.sur_mur      = True
+                    self.sur_mur = True
                     self.direction_mur = 1   # mur à droite
                     break
 
@@ -113,7 +106,7 @@ class Player:
                 if self._is_solid_at(int(self.x), int(self.y) + dy):
                     self.x = (int(self.x) // TILE_SIZE + 1) * TILE_SIZE
                     self.vx = 0
-                    self.sur_mur       = True
+                    self.sur_mur = True
                     self.direction_mur = -1  # mur à gauche
                     break
 
@@ -134,6 +127,7 @@ class Player:
                     self.y = (int(self.y) // TILE_SIZE + 1) * TILE_SIZE
                     self.vy = 0
                     break
+        print(self.sur_mur)
 
 
 class App:
