@@ -25,11 +25,11 @@
       <sourceFolder url="file://$MODULE_DIR$/Finish/Pierre feuille papier ciseaux/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/Finish/calculatrice/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Finish/calculatrice/tests" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/Working/mini_blog/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Working/mini_blog/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/Abandoned/mini_blog/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Abandoned/mini_blog/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/dqd" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.12" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.14" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
