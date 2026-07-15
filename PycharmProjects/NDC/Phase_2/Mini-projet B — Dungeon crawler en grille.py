@@ -1,8 +1,45 @@
+r"""
+================================================================================
+  ____  _   _ _   _  ____ _____ ___  _   _      _     ______   ______ _____
+ |  _ \| | | | \ | |/ ___| ____/ _ \| \ | |    / \   | _) / \ / / ___/ ___|
+ | | | | | | |  \| | |  _|  _|| | | |  \| |   / _ \  |  _ \\ V /\___ \___ \
+ | |_| | |_| | |\  | |_| | |__| |_| | |\  |  / ___ \ | |_) || |  ___) |__) |
+ |____/ \___/|_| \_|\____|_____\___/|_| \_| /_/   \_\|____/ |_| |____/____/
+
+================================================================================
+
+DESCRIPTION:
+    A retro top-down Dungeon Crawler based on a strict grid system.
+    Players explore a maze rendered via tilemaps, managing visibility
+    through a dynamic Fog of War system and interacting with a
+    grid-based inventory.
+
+FEATURES:
+    * Grid-based movement with smooth interpolation.
+    * Dynamic visibility system using line-of-sight (Ray-casting).
+    * Smart camera with a dead-zone to prevent jitter.
+    * State Management (Menu, Playing, Pause, Inventory, Game Over).
+    * Engine: Pyxel (Retro Game Engine for Python).
+
+CONTROLS:
+    * ARROW KEYS : Move player / Navigate menus.
+    * E          : Open/Close Inventory.
+    * P          : Pause game.
+    * ENTER      : Confirm selection in menus.
+
+AUTHOR:
+    Raphaël Villard (https://github.com/CrystalTime0)
+================================================================================
+"""
+
 import math
 from enum import Enum
 from typing import Optional
+from collections import deque
 
 import pyxel
+
+type GridPos = tuple[int, int]
 
 WORLD_WIDTH: int = 512
 WORLD_HEIGHT: int = 512
@@ -25,6 +62,10 @@ SOLIDS: list[tuple[int, int]] = [
 
 
 class Utils:
+    """
+    Utility functions for game mechanics.
+    """
+
     @staticmethod
     def is_solid_at(px: int, py: int) -> bool:
         """Check if a tile is solid (wall) at the given position."""
@@ -79,6 +120,7 @@ class Camera:
     :var screen_width: Width of the visible screen in pixels.
     :var screen_height: Height of the visible screen in pixels.
     """
+
     def __init__(self) -> None:
         """ Initialize the camera with the default position and size."""
         self.x: float = 0.0
@@ -109,6 +151,19 @@ class Camera:
 
 
 class FogOfWar:
+    """
+    Manages and renders a fog of war system for a game.
+
+    The `FogOfWar` class handles updating and drawing a fog of war system where
+    different regions of the game world are either unseen, seen, or visible
+    based on the player's position. It uses line-of-sight calculations
+    and manages the visibility state of grid cells.
+
+    :var cols: Number of columns in the fog grid.
+    :var rows: Number of rows in the fog grid.
+    :var fog: A 2D list representing the visibility state of each cell in the fog grid.
+        Possible states are `UNSEEN`, `SEEN`, and `VISIBLE`.
+    """
     UNSEEN: int = 0
     SEEN: int = 1
     VISIBLE: int = 2
@@ -177,6 +232,7 @@ class FogOfWar:
 
     def draw(self) -> None:
         """ Draw the fog of war to the screen."""
+
         for ty in range(self.rows):
             for tx in range(self.cols):
                 state: int = self.fog[ty][tx]
@@ -184,16 +240,10 @@ class FogOfWar:
                     x_pos: int = tx * 16
                     y_pos: int = ty * 16
 
-                    # Draw a checkerboard overlay so unseen areas remain readable
-                    # while still letting the player distinguish SEEN vs UNSEEN.
-                    for y in range(y_pos, y_pos + 16, 2):
-                        for x in range(x_pos, x_pos + 16, 2):
-                            is_checker_a: bool = ((x // 2) + (y // 2)) % 2 == 0
-                            if is_checker_a:
-                                pyxel.rect(x, y, 2, 2, 13)
-                            else:
-                                if state == self.UNSEEN:
-                                    pyxel.rect(x, y, 2, 2, 5)
+                    if state == self.SEEN:
+                        pyxel.blt(x_pos, y_pos, 2, 240, 112, 16, 16, 0)
+                    else:
+                        pyxel.blt(x_pos, y_pos, 2, 224, 112, 16, 16, 0)
 
 
 class Inventory:
@@ -271,6 +321,139 @@ class Inventory:
                     if item:
                         pyxel.text(48, 52, item[0], 7)
 
+#---------------------------------------------------------------#
+#                           ENEMIES                             #
+#---------------------------------------------------------------#
+
+class Enemy:
+    """
+    Represents an enemy entity within a game context.
+
+    This class encapsulates the properties and behaviours of an enemy. It is used
+    to define the characteristics of various enemy types, including their
+    location on a grid, movement speed, and categorization.
+
+    :var x: The x-coordinate of the enemy's position.
+    :var y: The y-coordinate of the enemy's position.
+    :var speed: The movement speed of the enemy. frame per move
+    :var type_name: The type or category of the enemy.
+    """
+    def __init__(self, x: int, y: int, type_name: str, player: Player) -> None:
+        self.x: int = x
+        self.y: int = y
+        self.type_name: str = type_name
+        self.player: Player = player
+        self.path: list[GridPos] | None = []
+        self.direction: tuple[int, int] = (1,0)
+        self.move_timer: int = 0
+
+    def bfs(self, target: GridPos) -> list[GridPos] | None:
+        """
+        Performs a breadth-first search (BFS) to find the shortest path between the
+        current position and a specified target in a grid-based world. This method
+        returns the path as a list of grid positions, excluding the starting position.
+
+        :param target: The target grid position to which the path will be found.
+        :return: A list of grid positions representing the shortest path to the target.
+            If the target is unreachable or the start and target positions are the same,
+            an empty list is returned.
+        """
+        start: GridPos = (self.x // TILE_SIZE, self.y // TILE_SIZE)
+
+        if start == target: return []
+
+        frontier = deque([start])
+        came_from: dict[GridPos, GridPos | None] = {start: None}
+
+        directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+
+        while frontier:
+            current: GridPos = frontier.popleft()
+
+            if current == target:
+                path: list[GridPos] = []
+                temp_curr: GridPos | None = current
+                while temp_curr is not None:
+                    path.append(temp_curr)
+                    temp_curr = came_from[temp_curr]
+                path.reverse()
+                return path[1:]
+
+            for dx, dy in directions:
+                neighbor: GridPos = (current[0] + dx, current[1] + dy)
+
+                # Check if the neighbour is within the world bounds and not already visited
+                if (0 <= neighbor[0] < WORLD_WIDTH // TILE_SIZE and
+                        0 <= neighbor[1] < WORLD_HEIGHT // TILE_SIZE and
+                        neighbor not in came_from):
+
+                    # Check if the neighbour is solid
+                    if not Utils.is_solid_at(neighbor[0] * TILE_SIZE, neighbor[1] * TILE_SIZE):
+                        came_from[neighbor] = current
+                        frontier.append(neighbor)
+        return []
+
+
+class Troll(Enemy):
+    SPEED = 30
+
+    def __init__(self, x: int, y: int, player: Player) -> None:
+        super().__init__(x, y, type_name="troll", player= player)
+        self.path_timer: int = 0
+
+    def update(self):
+        self.path_timer -= 1
+
+        if not self.path or self.path_timer <= 0:
+            self.path = self.bfs((self.player.x // TILE_SIZE, self.player.y // TILE_SIZE))
+            self.path_timer = 30
+
+        if self.path:
+            start_x = self.x
+            start_y = self.y
+
+            # Tuile cible en pixels
+            target_x = self.path[0][0] * GRID_TILE_SIZE
+            target_y = self.path[0][1] * GRID_TILE_SIZE
+
+            dx = target_x - start_x
+            dy = target_y - start_y
+
+            if (pyxel.sgn(dx), pyxel.sgn(dy)) != (0, 0):
+                self.direction = (int(pyxel.sgn(dx)), int(pyxel.sgn(dy)))
+
+            if self.move_timer > 0:
+                self.move_timer -= 1
+
+                # Interpolate between start and destination so movement feels smooth
+                # even though gameplay logic is grid-based.
+                t: float = 1.0 - (self.move_timer / self.SPEED)
+                self.x = int(start_x + (target_x - start_x) * t)
+                self.y = int(start_y + (target_y - start_y) * t)
+            else:
+                self.path.pop(0)
+                self.move_timer = self.SPEED
+
+    def draw(self):
+        u: int = 0
+        match self.direction:
+            case (0, -1):
+                u = 96
+            case (0, 1):
+                u = 64
+            case (-1, 0):
+                u = 32
+            case (1, 0):
+                u = 0
+
+        # Alternate between two frames while moving to create a walk animation.
+        frame: int = (
+            u + 16
+            if (self.move_timer > 0 and (self.move_timer % self.SPEED) >= self.SPEED // 2)
+            else u
+        )
+        pyxel.blt(self.y, self.x, 2, frame, 160, GRID_TILE_SIZE, GRID_TILE_SIZE, 8)
+
 
 class Player:
     """
@@ -295,8 +478,10 @@ class Player:
     :var move_timer: A counter for tracking the remaining time for the current movement animation.
     :var move_duration: The duration of the movement animation, controlling its speed.
     :var direction: A tuple representing the player's current movement direction as (x, y).
+    :var fog_of_war: Instance of FogOfWar used to manage visibility and obscured areas of the game map.
     """
-    def __init__(self) -> None:
+
+    def __init__(self, fog_of_war: FogOfWar) -> None:
         """ Initialize the player at the start of the game."""
         self.x: int = 0  # Logical grid position.
         self.y: int = 16
@@ -312,8 +497,11 @@ class Player:
         self.width: int = 16
         self.height: int = 16
         self.move_timer: int = 0
-        self.move_duration: int = 12
+        self.move_duration: int = 16
         self.direction: tuple[int, int] = (0, 1)
+
+        self.fog_of_war = fog_of_war
+        self.fog_of_war.update(self.x, self.y)
 
     def update(self) -> None:
         """ Update the player's position based on user input and movement logic."""
@@ -385,6 +573,7 @@ class Player:
 
         if self.x != self.start_x or self.y != self.start_y:
             self.move_timer = self.move_duration
+            self.fog_of_war.update(self.x, self.y)
 
 
 class State(Enum):
@@ -412,15 +601,18 @@ class App:
     :var menu_selected_item: Index of the currently selected menu item in the main menu.
     :var pause_selected_item: Index of the currently selected menu item in the pause menu.
     """
+
     def __init__(self) -> None:
         """ Initialize the game state and start the main game loop."""
         pyxel.init(256, 256, "Mini-projet B — Dungeon crawler en grille", 30)
         pyxel.load("ress/Mini-Projet_B.pyxres")
         self.state = State.MENU
-        self.player = Player()
-        self.inventory = Inventory()
         self.fog_of_war = FogOfWar()
+        self.player = Player(self.fog_of_war)
+        self.inventory = Inventory()
         self.camera = Camera()
+
+        self.enemies: list[Enemy] = [Troll(16, 16, self.player)]
 
         self.menu_selected_item: int = 0
         self.pause_selected_item: int = 0
@@ -458,9 +650,11 @@ class App:
     def _update_playing(self) -> None:
         """ Update the playing state based on user input and game logic."""
         # Update fog before movement so visibility is always based on the current frame state.
-        self.fog_of_war.update(self.player.x, self.player.y)
+        #self.fog_of_war.update(self.player.x, self.player.y)
         self.player.update()
-        self.camera.follow(self.player.x, self.player.y)
+        for enemy in self.enemies:
+            enemy.update()
+        self.camera.follow(self.player.render_x, self.player.render_y)
 
         if pyxel.btnp(pyxel.KEY_E):
             self.state = State.INVENTORY
@@ -515,8 +709,8 @@ class App:
         couleur: int = 7 if (pyxel.frame_count // 15) % 2 == 0 else 12
 
         pyxel.text(90 if self.menu_selected_item == 0 else 98,
-            140,
-            "> FALL INTO ABYSS" if self.menu_selected_item == 0 else "FALL INTO ABYSS",
+                   140,
+                   "> FALL INTO ABYSS" if self.menu_selected_item == 0 else "FALL INTO ABYSS",
                    couleur if self.menu_selected_item == 0 else 7)
 
         pyxel.text(
@@ -535,12 +729,14 @@ class App:
         pyxel.bltm(0, 0, 1, 0, 0, WORLD_WIDTH, WORLD_HEIGHT, colkey=8)
 
         self.player.draw()
+
+        for enemy in self.enemies:
+            enemy.draw()
         self.fog_of_war.draw()
 
     def _draw_pause(self) -> None:
         """ Draw the pause menu to the screen."""
         self._draw_playing()
-
         # Darken the screen with lines to add depths to the paused state.
         for y in range(0, pyxel.height, 2):
             pyxel.line(0, y, WORLD_WIDTH, y, 0)
@@ -560,6 +756,8 @@ class App:
     def _draw_inventory(self) -> None:
         """ Draw the inventory menu to the screen."""
         self._draw_playing()
+
+        pyxel.camera(self.camera.x, self.camera.y)
 
         # Add a checker overlay over the world to make the inventory screen feel modal.
         for i in range(pyxel.height):

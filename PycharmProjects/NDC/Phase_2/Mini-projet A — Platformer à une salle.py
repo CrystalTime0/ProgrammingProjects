@@ -102,7 +102,6 @@ class Player:
 
     def update(self):
         self.deja_sur_mur = self.sur_mur
-
         if self.wall_jump_timer > 0:
             self.wall_jump_timer -= 1
         elif self.sur_mur and not self.au_sol:
