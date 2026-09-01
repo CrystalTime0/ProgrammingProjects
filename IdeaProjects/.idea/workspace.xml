@@ -3,52 +3,30 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="BackgroundAgentGlobalSettings">
-    <option name="selectedModelId" value="auto" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="99ea71d8-ecde-4cdf-90a0-6ea2d1bd2aef" name="Changes" comment="go">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AccountManager/.continue/prompts/new-prompt.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/service/TransactionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AccountManager/src/test/java/com/raphdev/accountmanager/model/BankAccountTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AccountManager/src/test/java/com/raphdev/accountmanager/service/TransactionServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generate_javadoc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../PycharmProjects/.idea/dictionaries/project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../PycharmProjects/Working/Tower_Defense/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../PycharmProjects/Working/fourier.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AccountManager/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/BankAccount.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/Transaction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AccountManager/src/test/java/com/raphdev/accountmanager/model/CategoryTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AccountManager/src/test/java/com/raphdev/accountmanager/model/TransactionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/BankAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/BankAccount.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountManager/src/main/java/com/raphdev/accountmanager/model/Transaction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AccountManager/src/test/java/com/raphdev/accountmanager/model/CategoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/AccountManager/src/test/java/com/raphdev/accountmanager/model/CategoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IdeaProjects.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IdeaProjects/com/raphdev/accountmanager/model/BankAccount.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IdeaProjects/com/raphdev/accountmanager/model/Category.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/IdeaProjects/com/raphdev/accountmanager/model/Transaction.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/IdeaProjects/com/raphdev/accountmanager/model/CategoryTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/IdeaProjects/com/raphdev/accountmanager/model/TransactionTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PycharmProjects/.idea/PycharmProjects.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../PycharmProjects/.idea/PycharmProjects.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../PycharmProjects/Finish/chess/src/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/../PycharmProjects/Finish/chess/src/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IdeaProjects.iml" beforeDir="false" afterPath="$PROJECT_DIR$/IdeaProjects.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CopilotPersistence">
-    <persistenceIdMap>
-      <entry key="_/home/raphael/Documents/ProgrammingProjects/IdeaProjects" value="2yv6uher8lDurk2wTXYcZ3821mf" />
-    </persistenceIdMap>
-  </component>
   <component name="CoverageOptionsProvider">
     <option name="myAddOrReplace" value="0" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="49" />
+    <option name="cachedIndexableFilesCount" value="17" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileColors">
@@ -72,6 +50,9 @@
     &quot;assignee&quot;: &quot;CrystalTime0&quot;
   }
 }</component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="734d849c-e4ce-42ee-af6a-a9006c0718a5" />
+  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/CrystalTime0/ProgrammingProjects.git&quot;,
@@ -93,84 +74,66 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000010539645" />
-      <entry key="S5" value="1.0003495643670266" />
-      <entry key="S10" value="1.032816647694236" />
-      <entry key="S30" value="1.975525251329881" />
-      <entry key="S60" value="3.653880301321427" />
-      <entry key="M2" value="5.81023140815146" />
-      <entry key="M5" value="10.77272209996754" />
-      <entry key="M10" value="17.658414736457125" />
-      <entry key="M15" value="22.094151237501993" />
-      <entry key="M30" value="28.546147701238098" />
-      <entry key="H1" value="34.00373248396292" />
-      <entry key="H2" value="47.95586530478867" />
-      <entry key="H4" value="77.99232143780533" />
-      <entry key="D1" value="164.14953219290692" />
-      <entry key="W1" value="318.97996370324296" />
+      <entry key="MS500" value="1.0000048486013708" />
+      <entry key="S2" value="1.0476398675326815" />
+      <entry key="S5" value="1.349314070088325" />
+      <entry key="S10" value="1.7773567680310414" />
+      <entry key="S30" value="2.5106690946198733" />
+      <entry key="S60" value="3.281890974081405" />
+      <entry key="M2" value="4.96913458610501" />
+      <entry key="M5" value="8.587969181378757" />
+      <entry key="M10" value="12.799846296082853" />
+      <entry key="M15" value="18.17634593258155" />
+      <entry key="M30" value="38.50506763328035" />
+      <entry key="H1" value="70.84398847806644" />
+      <entry key="H2" value="102.5817243050022" />
+      <entry key="H4" value="125.43947110077632" />
+      <entry key="D1" value="149.52209365792194" />
+      <entry key="W1" value="154.2026504261972" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="1.0461432606520442E-131" />
-      <entry key="S5" value="4.0536334845244326E-53" />
-      <entry key="S10" value="6.4014455034331495E-27" />
-      <entry key="S30" value="2.6136396664996898E-9" />
-      <entry key="S60" value="1.0979646522896557E-4" />
-      <entry key="M2" value="0.029149805399291868" />
-      <entry key="M5" value="0.9353687658862884" />
-      <entry key="M10" value="3.040440030028471" />
-      <entry key="M15" value="4.515649875883903" />
-      <entry key="M30" value="6.718162709094939" />
-      <entry key="H1" value="8.47775712103636" />
-      <entry key="H2" value="11.967568103507466" />
-      <entry key="H4" value="18.86348308329685" />
-      <entry key="D1" value="36.39164484718996" />
-      <entry key="W1" value="86.58620586339987" />
+      <entry key="MS100" value="6.003683968047734E-169" />
+      <entry key="MS500" value="2.268211586668243E-34" />
+      <entry key="S2" value="3.880796689570775E-9" />
+      <entry key="S5" value="4.320841708572482E-4" />
+      <entry key="S10" value="0.020786798550656106" />
+      <entry key="S30" value="0.2822331842218891" />
+      <entry key="S60" value="0.655587082359482" />
+      <entry key="M2" value="1.378285850302016" />
+      <entry key="M5" value="2.7757472393598865" />
+      <entry key="M10" value="4.146938597104024" />
+      <entry key="M15" value="6.122701022588665" />
+      <entry key="M30" value="15.509104354055255" />
+      <entry key="H1" value="32.66496793727147" />
+      <entry key="H2" value="50.51584160944302" />
+      <entry key="H4" value="63.696863170267875" />
+      <entry key="D1" value="77.77594691563317" />
+      <entry key="W1" value="80.53027488844471" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.019505164826587686" />
-      <entry key="MS500" value="0.45501941204044954" />
-      <entry key="S2" value="0.8213107016092859" />
-      <entry key="S5" value="0.9245901064782468" />
-      <entry key="S10" value="0.9918639365659606" />
-      <entry key="S30" value="1.9312460504295288" />
-      <entry key="S60" value="3.59988699315454" />
-      <entry key="M2" value="5.789698224900281" />
-      <entry key="M5" value="11.65720596237319" />
-      <entry key="M10" value="20.648579193397435" />
-      <entry key="M15" value="26.565575029695047" />
-      <entry key="M30" value="35.2344761139705" />
-      <entry key="H1" value="42.46358270164134" />
-      <entry key="H2" value="59.91156668233101" />
-      <entry key="H4" value="96.84696076772701" />
-      <entry key="D1" value="200.53848403899622" />
-      <entry key="W1" value="405.5655167218811" />
+      <entry key="MS100" value="0.008668511500530038" />
+      <entry key="MS500" value="0.3868929745485169" />
+      <entry key="S2" value="0.8254516954634573" />
+      <entry key="S5" value="1.224064954171861" />
+      <entry key="S10" value="1.7096074171810636" />
+      <entry key="S30" value="2.7422796656901665" />
+      <entry key="S60" value="3.8973156523336385" />
+      <entry key="M2" value="6.310570011658681" />
+      <entry key="M5" value="11.334162138602554" />
+      <entry key="M10" value="16.923109154984985" />
+      <entry key="M15" value="24.27478887981851" />
+      <entry key="M30" value="53.9852176055899" />
+      <entry key="H1" value="103.48108326199835" />
+      <entry key="H2" value="153.077131779883" />
+      <entry key="H4" value="189.12379920455686" />
+      <entry key="D1" value="227.29554722991952" />
+      <entry key="W1" value="234.732557945673" />
     </decayedShown>
-  </component>
-  <component name="ProblemsViewState">
-    <option name="groupByToolId" value="true" />
-    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="2yv6uher8lDurk2wTXYcZ3821mf" />
-  <component name="ProjectSessionTemplates">
-    <option name="panelTemplate">
-      <template>
-        <option name="modeId" value="Agent" />
-        <option name="model">
-          <model>
-            <option name="modelType" value="builtin_id" />
-            <option name="modelValue" value="auto" />
-          </model>
-        </option>
-        <option name="targetType" value="LOCAL" />
-      </template>
-    </option>
-  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -180,9 +143,7 @@
     "Application.Main.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
     "JUnit.*Test*.executor": "Run",
-    "JUnit.All in IdeaProjects.executor": "Run",
-    "JUnit.All in accountmanager.executor": "Coverage",
-    "JUnit.BankAccountTest.testBankAccountGetters.executor": "Coverage",
+    "JUnit.All in IdeaProjects.executor": "Coverage",
     "JUnit.CategoryTest.testCategoryConstructorInvalidColor.executor": "Debug",
     "JUnit.CategoryTest.testCategoryConstructorWithOnlyName.executor": "Run",
     "JUnit.CategoryTest.testCategoryInvalidColorFormat.executor": "Run",
@@ -191,9 +152,6 @@
     "JUnit.CompteBancaireTest.testDeposerArgentAugmenteLeSolde.executor": "Run",
     "JUnit.CompteBancaireTest.testRetirerArgentDiminueLeSolde.executor": "Run",
     "JUnit.CompteBancaireTest.testRetirerMontantTropEleveDoitLeverUneErreur.executor": "Run",
-    "JUnit.TransactionServiceTest.executor": "Coverage",
-    "JUnit.TransactionServiceTest.testGetTransactionsByCategory.executor": "Coverage",
-    "JUnit.TransactionServiceTest.testGetTransactionsByCategory_CoverageNullAndDifferentCategory.executor": "Run",
     "JUnit.TransactionTest.executor": "Run",
     "JUnit.TransactionTest.testInvalidAmount.executor": "Run",
     "JUnit.TransactionTest.testTransaction.executor": "Run",
@@ -202,13 +160,10 @@
     "JUnit.Unnamed.executor": "Run",
     "JUnit.accountmanager in accountmanager.executor": "Run",
     "JUnit.com.raphdev.accountmanager in IdeaProjects.executor": "Coverage",
-    "JUnit.com.raphdev.accountmanager.model in IdeaProjects.executor": "Run",
-    "JUnit.com.raphdev.accountmanager.model in accountmanager.executor": "Coverage",
-    "JUnit.java in accountmanager.executor": "Coverage",
+    "JUnit.com.raphdev.accountmanager.model in IdeaProjects.executor": "Coverage",
     "JUnit.main in IdeaProjects.executor": "Coverage",
     "Java Scratch.Main.executor": "Run",
     "Kotlin script.bl.main.kts.executor": "Run",
-    "Maven.accountmanager [compiler:testCompile].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
@@ -218,18 +173,14 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "last.edited.regexp": "",
-    "last_opened_file_path": "/home/raphael/Documents/Dev/Perso/ProgrammingProjects/IdeaProjects",
+    "last_opened_file_path": "C:/Users/Raphaël/ProgrammingProjects/IdeaProjects/AccountManager/src/main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -238,9 +189,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "to.speed.mode.migration.done": "true"
+    "settings.editor.selected.configurable": "coverage"
   },
   "keyToStringList": {
     "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
@@ -267,30 +216,22 @@
       <recent name="com.raphdev" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
-      <recent name="com.raphdev.accountmanager.service" />
       <recent name="com.raphdev.accountmanager.model" />
       <recent name="yrtde" />
       <recent name="" />
     </key>
   </component>
-  <component name="RunAnythingCache">
-    <option name="myCommands">
-      <command value="mvn compiler:testCompile" />
-    </option>
-  </component>
-  <component name="RunManager" selected="JUnit.All in accountmanager">
-    <configuration name="All in accountmanager" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="accountmanager" />
+  <component name="RunManager" selected="JUnit.All in IdeaProjects">
+    <configuration name="All in IdeaProjects" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IdeaProjects" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BankAccountTest.testBankAccountGetters" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="accountmanager" />
+    <configuration name="TransactionTest.testTransactionInvalidLabel" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IdeaProjects" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.raphdev.accountmanager.model.*" />
@@ -298,75 +239,40 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.raphdev.accountmanager.model" />
-      <option name="MAIN_CLASS_NAME" value="com.raphdev.accountmanager.model.BankAccountTest" />
-      <option name="METHOD_NAME" value="testBankAccountGetters" />
+      <option name="MAIN_CLASS_NAME" value="com.raphdev.accountmanager.model.TransactionTest" />
+      <option name="METHOD_NAME" value="testTransactionInvalidLabel" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TransactionServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="accountmanager" />
+    <configuration name="com.raphdev.accountmanager.model in IdeaProjects" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="IdeaProjects" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.raphdev.accountmanager.service.*" />
+          <option name="PATTERN" value="com.raphdev.accountmanager.model.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.raphdev.accountmanager.service" />
-      <option name="MAIN_CLASS_NAME" value="com.raphdev.accountmanager.service.TransactionServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TransactionServiceTest.testGetTransactionsByCategory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="accountmanager" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.raphdev.accountmanager.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.raphdev.accountmanager.service" />
-      <option name="MAIN_CLASS_NAME" value="com.raphdev.accountmanager.service.TransactionServiceTest" />
-      <option name="METHOD_NAME" value="testGetTransactionsByCategory" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TransactionServiceTest.testGetTransactionsByCategory_CoverageNullAndDifferentCategory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="accountmanager" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.raphdev.accountmanager.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.raphdev.accountmanager.service" />
-      <option name="MAIN_CLASS_NAME" value="com.raphdev.accountmanager.service.TransactionServiceTest" />
-      <option name="METHOD_NAME" value="testGetTransactionsByCategory_CoverageNullAndDifferentCategory" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.raphdev.accountmanager.model" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.All in accountmanager" />
-        <item itemvalue="JUnit.TransactionServiceTest" />
-        <item itemvalue="JUnit.TransactionServiceTest.testGetTransactionsByCategory_CoverageNullAndDifferentCategory" />
-        <item itemvalue="JUnit.TransactionServiceTest.testGetTransactionsByCategory" />
-        <item itemvalue="JUnit.BankAccountTest.testBankAccountGetters" />
+        <item itemvalue="JUnit.All in IdeaProjects" />
+        <item itemvalue="JUnit.TransactionTest.testTransactionInvalidLabel" />
+        <item itemvalue="JUnit.com.raphdev.accountmanager.model in IdeaProjects" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-30f59d01ecdd-63390994e64e-intellij.indexing.shared.core-IU-262.8665.258" />
-        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.8665.258" />
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.26222.65" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.26222.65" />
       </set>
     </attachedChunks>
   </component>
@@ -392,9 +298,6 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="UnknownFeatures">
-    <option featureType="com.intellij.fileTypeFactory" implementationName="*.py" />
-  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="go" />
     <option name="LAST_COMMIT_MESSAGE" value="go" />
@@ -404,25 +307,11 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/IdeaProjects$main_in_IdeaProjects.ic" NAME="main in IdeaProjects Coverage Results" MODIFIED="1784284786376" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
-    <SUITE FILE_PATH="coverage/IdeaProjects$TransactionServiceTest_testGetTransactionsByCategory.ic" NAME="TransactionServiceTest.testGetTransactionsByCategory Coverage Results" MODIFIED="1785102426799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>com.raphdev.accountmanager.service.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/IdeaProjects$java_in_accountmanager.ic" NAME="java in accountmanager Coverage Results" MODIFIED="1784309897088" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
-    <SUITE FILE_PATH="coverage/IdeaProjects$TransactionServiceTest.ic" NAME="TransactionServiceTest Coverage Results" MODIFIED="1785102954150" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>com.raphdev.accountmanager.service.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/IdeaProjects$com_raphdev_accountmanager_in_IdeaProjects.ic" NAME="com.raphdev.accountmanager in IdeaProjects Coverage Results" MODIFIED="1784285058748" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
-    <SUITE FILE_PATH="coverage/IdeaProjects$All_in_accountmanager.ic" NAME="All in accountmanager Coverage Results" MODIFIED="1785102965867" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
     <SUITE FILE_PATH="coverage/IdeaProjects$All_in_IdeaProjects.ic" NAME="All in IdeaProjects Coverage Results" MODIFIED="1784286827792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
-    <SUITE FILE_PATH="coverage/IdeaProjects$BankAccountTest_testBankAccountGetters.ic" NAME="BankAccountTest.testBankAccountGetters Coverage Results" MODIFIED="1784759167770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>com.raphdev.accountmanager.model.*</FILTER>
-    </SUITE>
     <SUITE FILE_PATH="coverage/IdeaProjects$com_raphdev_accountmanager_model_in_IdeaProjects.ic" NAME="com.raphdev.accountmanager.model in IdeaProjects Coverage Results" MODIFIED="1784286124706" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true">
       <FILTER>com.raphdev.accountmanager.model.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/IdeaProjects$com_raphdev_accountmanager_model_in_accountmanager.ic" NAME="com.raphdev.accountmanager.model in accountmanager Coverage Results" MODIFIED="1784641615117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true">
-      <FILTER>com.raphdev.accountmanager.model.*</FILTER>
-    </SUITE>
+    <SUITE FILE_PATH="coverage/IdeaProjects$main_in_IdeaProjects.ic" NAME="main in IdeaProjects Coverage Results" MODIFIED="1784284786376" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="true" />
   </component>
 </project>
