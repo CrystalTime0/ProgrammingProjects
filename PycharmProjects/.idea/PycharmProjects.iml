@@ -29,7 +29,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Abandoned/mini_blog/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/dqd" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.14" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.14 (PycharmProjects) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
