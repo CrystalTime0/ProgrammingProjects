@@ -1,32 +1,32 @@
-import pygame
-from Pieces import *
-from board import NewBoard
+from typing import Any, Optional
+
 from constants import *
+from Pieces import Bishop, Knight, Piece, Queen, Rook
+from board import NewBoard
 
 
 class Game:
-    def __init__(self, Width, Height, Rows, Cols, Square, Win):
-        self.Win = Win
-        self.Square = Square
+    def __init__(self, win: pygame.Surface):
+        self.win = win
         self.turn = WHITE
-        self.selected = None
-        self.valid_moves = []
+        self.selected: Optional[Piece] = None
+        self.valid_moves: list[tuple[int, int]] = []
         self.Black_pieces_left = 16
         self.White_pieces_left = 16
         self.current_turn = 1
         self.total_turn = 1
-        self.past_moves_code = {}    # {1: ("e4", "e5"), 2: ("Nf3",)}
-        self.past_moves_usable = {}  # {1: ((sr, sc), (er, ec))}
+        self.past_moves_code: dict[int, tuple[str, ...]] = {}
+        self.past_moves_usable: dict[int, tuple[tuple[int, int], tuple[int, int]]] = {}
         self.nb_moves_from_last_capture = 0
-        self.Board = NewBoard(Width, Height, Rows, Cols, Square, Win, self)
+        self.Board = NewBoard(win, self)
 
-    def update_window(self):
+    def update_window(self) -> None:
         self.Board.draw_board()
         self.Board.draw_pieces()
         self.draw_available_moves()
         pygame.display.update()
 
-    def reset(self):
+    def reset(self) -> None:
         self.turn = WHITE
         self.selected = None
         self.valid_moves = []
@@ -37,46 +37,47 @@ class Game:
         self.past_moves_code.clear()
         self.past_moves_usable.clear()
         self.nb_moves_from_last_capture = 0
-        self.Board = NewBoard(Width, Height, Rows, Cols, self.Square, self.Win, self)
+        self.Board = NewBoard(self.win, self)
 
     @staticmethod
     def get_positions_on_board(x: int, y: int) -> tuple[int, int]:
-        row = y // Square
-        col = x // Square
+        row = y // SQUARE
+        col = x // SQUARE
         return row, col
 
-    def check_game(self):
+    def check_game(self) -> bool:
         if self.checkmate(self.Board):
             winner = "Black" if self.turn == WHITE else "White"
             print(f"Checkmate! {winner} wins.")
             return True
         return False
 
-    def enemies_moves(self, color, Board):
+    @staticmethod
+    def enemies_moves(color: tuple[int, int, int], board: NewBoard) -> list[tuple[int, int]]:
         moves = []
-        for r in range(Board.Rows):
-            for c in range(Board.Cols):
-                piece = Board.Board[r][c]
-                if piece != 0 and piece.color != color:
+        for r in range(ROWS):
+            for c in range(COLS):
+                piece = board.Board[r][c]
+                if isinstance(piece, Piece) and piece.color != color:
                     if piece.type in ("King", "Pawn"):
-                        moves.extend(piece.get_attack_squares(Board))
+                        moves.extend(piece.get_attack_squares(board))
                     else:
-                        moves.extend(piece.get_available_moves(Board, ignore_checks=True))
+                        moves.extend(piece.get_available_moves(board))
         return moves
 
-    def is_square_attacked(self, row, col, color):
+    def is_square_attacked(self, row: int, col: int, color: tuple[int, int, int]) -> bool:
         return (row, col) in self.enemies_moves(color, self.Board)
 
-    def get_king_pos(self, Board, color=None):
+    def get_king_pos(self, board: NewBoard, color: Optional[tuple[int, int, int]] = None) -> tuple[int, int]:
         target_color = color if color else self.turn
-        for r in range(Board.Rows):
-            for c in range(Board.Cols):
-                piece = Board.Board[r][c]
-                if piece != 0 and piece.type == "King" and piece.color == target_color:
+        for r in range(ROWS):
+            for c in range(COLS):
+                piece = board.Board[r][c]
+                if isinstance(piece, Piece) and piece.type == "King" and piece.color == target_color:
                     return r, c
         raise ValueError("King not found on board")
 
-    def create_piece(self, piece_type, color, row, col):
+    def create_piece(self, piece_type: str, color: tuple[int, int, int], row: int, col: int) -> Piece:
         mapping = {
             "Queen": (Queen, White_Queen if color == WHITE else Black_Queen),
             "Rook": (Rook, White_Rook if color == WHITE else Black_Rook),
@@ -84,11 +85,11 @@ class Game:
             "Knight": (Knight, White_Knight if color == WHITE else Black_Knight),
         }
         cls, img = mapping[piece_type]
-        return cls(self.Square, img, color, piece_type, row, col, self)
+        return cls(img, color, piece_type, row, col, self)
 
-    def promote_pawn(self, pawn):
-        popup_x = Height // 2 - 2 * self.Square
-        popup_y = (Width - self.Square) // 2
+    def promote_pawn(self, pawn: Piece) -> Piece:
+        popup_x = HEIGHT // 2 - 2 * SQUARE
+        popup_y = (WIDTH - SQUARE) // 2
 
         options = ["Queen", "Rook", "Bishop", "Knight"]
         option_images = (
@@ -102,9 +103,14 @@ class Game:
             self.Board.draw_pieces()
 
             for i, img in enumerate(option_images):
-                rect = pygame.Rect(BOARD_OFFSET[0] + popup_x + i * self.Square, BOARD_OFFSET[1] + popup_y, self.Square, self.Square)
-                pygame.draw.rect(self.Win, GREY, rect)
-                self.Win.blit(img, (rect.x, rect.y))
+                rect = pygame.Rect(
+                    BOARD_OFFSET[0] + popup_x + i * SQUARE,
+                    BOARD_OFFSET[1] + popup_y,
+                    SQUARE,
+                    SQUARE,
+                )
+                pygame.draw.rect(self.win, GREY, rect)
+                self.win.blit(img, (rect.x, rect.y))
 
             pygame.display.update()
 
@@ -115,11 +121,16 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mx, my = pygame.mouse.get_pos()
                     for i in range(4):
-                        rect = pygame.Rect(BOARD_OFFSET[0] + popup_x + i * self.Square, BOARD_OFFSET[1] + popup_y, self.Square, self.Square)
+                        rect = pygame.Rect(
+                            BOARD_OFFSET[0] + popup_x + i * SQUARE,
+                            BOARD_OFFSET[1] + popup_y,
+                            SQUARE,
+                            SQUARE,
+                        )
                         if rect.collidepoint(mx, my):
                             return self.create_piece(options[i], pawn.color, pawn.row, pawn.col)
 
-    def simulate_move(self, piece, row, col):
+    def simulate_move(self, piece: Piece, row: int, col: int) -> bool:
         orig_row, orig_col = piece.row, piece.col
         captured = self.Board.Board[row][col]
 
@@ -145,18 +156,18 @@ class Game:
 
         return not in_check
 
-    def checkmate(self, Board):
-        for r in range(Board.Rows):
-            for c in range(Board.Cols):
-                piece = Board.Board[r][c]
-                if piece != 0 and piece.color == self.turn:
-                    moves = piece.get_available_moves(Board)
+    def checkmate(self, board: NewBoard) -> bool:
+        for r in range(ROWS):
+            for c in range(COLS):
+                piece = board.Board[r][c]
+                if isinstance(piece, Piece) and piece.color == self.turn:
+                    moves = piece.get_available_moves(board)
                     for move in moves:
                         if self.simulate_move(piece, move[0], move[1]):
                             return False
         return True
 
-    def change_turn(self):
+    def change_turn(self) -> None:
         if self.turn == WHITE:
             self.turn = BLACK
         else:
@@ -164,21 +175,24 @@ class Game:
             self.current_turn += 1
         self.total_turn += 1
 
-    def handle_click(self, location):
-        if (BOARD_OFFSET[0] <= location[0] <= BOARD_OFFSET[0] + Width and
-            BOARD_OFFSET[1] <= location[1] <= BOARD_OFFSET[1] + Height
+    def handle_click(self, location: tuple[int, int]) -> None:
+        if (
+            BOARD_OFFSET[0] <= location[0] <= BOARD_OFFSET[0] + WIDTH
+            and BOARD_OFFSET[1] <= location[1] <= BOARD_OFFSET[1] + HEIGHT
         ):
-            row, col = self.get_positions_on_board(location[0] - BOARD_OFFSET[0], location[1] - BOARD_OFFSET[1])
+            row, col = self.get_positions_on_board(
+                location[0] - BOARD_OFFSET[0], location[1] - BOARD_OFFSET[1]
+            )
             self.select(row, col)
 
-    def select(self, row, col):
+    def select(self, row: int, col: int) -> None:
         if self.selected:
             moved = self._move(row, col)
             if moved:
                 return
 
         piece = self.Board.get_piece(row, col)
-        if piece != 0 and piece.color == self.turn:
+        if isinstance(piece, Piece) and piece.color == self.turn:
             self.selected = piece
             raw_moves = piece.get_available_moves(self.Board)
             self.valid_moves = [m for m in raw_moves if self.simulate_move(piece, m[0], m[1])]
@@ -186,19 +200,27 @@ class Game:
             self.selected = None
             self.valid_moves = []
 
-    def get_move_code(self, piece, start_pos, end_pos, captured_piece, is_ep=False, promoted_to=None):
+    @staticmethod
+    def get_move_code(
+        piece: Piece,
+        start_pos: tuple[int, int],
+        end_pos: tuple[int, int],
+        captured_piece: Any,
+        is_ep: bool = False,
+        promoted_to: Optional[Piece] = None,
+    ) -> str:
         sr, sc = start_pos
         er, ec = end_pos
 
         if piece.type == "King" and abs(ec - sc) == 2:
             return "O-O" if ec > sc else "O-O-O"
 
-        code = piece_code[piece.type]
-        dest = f"{col_name[ec]}{8 - er}"
+        code = PIECE_CODE[piece.type]
+        dest = f"{COL_NAME[ec]}{8 - er}"
 
         if piece.type == "Pawn":
             if captured_piece != 0 or is_ep:
-                code = f"{col_name[sc]}x{dest}"
+                code = f"{COL_NAME[sc]}x{dest}"
             else:
                 code = dest
         else:
@@ -208,11 +230,11 @@ class Game:
                 code += dest
 
         if promoted_to:
-            code += f"={piece_code[promoted_to.type]}"
+            code += f"={PIECE_CODE[promoted_to.type]}"
 
         return code
 
-    def _move(self, row, col):
+    def _move(self, row: int, col: int) -> bool:
         if not self.selected or (row, col) not in self.valid_moves:
             return False
 
@@ -231,12 +253,14 @@ class Game:
             r_row = start_pos[0]
             if col > start_pos[1]:
                 rook = self.Board.get_piece(r_row, 7)
-                self.Board.move(rook, r_row, col - 1)
+                if isinstance(rook, Rook):
+                    self.Board.move(rook, r_row, col - 1)
             else:
                 rook = self.Board.get_piece(r_row, 0)
-                self.Board.move(rook, r_row, col + 1)
+                if isinstance(rook, Rook):
+                    self.Board.move(rook, r_row, col + 1)
 
-        if target != 0 and target.color != self.selected.color:
+        if isinstance(target, Piece) and target.color != self.selected.color:
             self.remove(target, row, col)
             self.nb_moves_from_last_capture = 0
         elif self.selected.type == "Pawn":
@@ -270,38 +294,43 @@ class Game:
 
         return True
 
-    def remove(self, piece, row, col):
-        if piece != 0:
+    def remove(self, piece: Any, row: int, col: int) -> None:
+        if isinstance(piece, Piece):
             self.Board.Board[row][col] = 0
             if piece.color == WHITE:
                 self.White_pieces_left -= 1
             else:
                 self.Black_pieces_left -= 1
 
-    def draw_available_moves(self):
+    def draw_available_moves(self) -> None:
         if not self.selected or not self.valid_moves:
             return
 
+        grey_alpha = (0, 0, 0, 75)
+
         for row, col in self.valid_moves:
-            center = (BOARD_OFFSET[0] + col * self.Square + self.Square // 2, BOARD_OFFSET[1] + row * self.Square + self.Square // 2)
             target = self.Board.get_piece(row, col)
 
-            # Détection de la prise en passant
             is_en_passant = (
                 self.selected.type == "Pawn"
                 and target == 0
                 and col != self.selected.col
             )
 
-            # Si la case contient une pièce ennemie ou s'il s'agit d'un En Passant -> Anneau creux
-            if target != 0 or is_en_passant:
-                radius = self.Square // 2 - 4
-                line_width = max(5, self.Square // 14)
-                pygame.draw.circle(self.Win, GREY, center, radius, line_width)
-            else:
-                # Déplacement simple -> Rond plein au centre
-                radius = self.Square // 6
-                pygame.draw.circle(self.Win, GREY, center, radius)
+            surf = pygame.Surface((SQUARE, SQUARE), pygame.SRCALPHA)
+            center_rel = (SQUARE // 2, SQUARE // 2)
 
-    def get_board(self):
+            if target != 0 or is_en_passant:
+                radius = SQUARE // 2 - 4
+                line_width = max(5, SQUARE // 14)
+                pygame.draw.circle(surf, grey_alpha, center_rel, radius, line_width)
+            else:
+                radius = SQUARE // 6
+                pygame.draw.circle(surf, grey_alpha, center_rel, radius)
+
+            pos_x = BOARD_OFFSET[0] + col * SQUARE
+            pos_y = BOARD_OFFSET[1] + row * SQUARE
+            self.win.blit(surf, (pos_x, pos_y))
+
+    def get_board(self) -> NewBoard:
         return self.Board

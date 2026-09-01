@@ -1,22 +1,24 @@
 import os
+import subprocess
+import sys
 import pygame
 
-# Téléchargement automatique des images si nécessaire
 downloader = os.path.join("data", "chess_images", "pieces_downloader.py")
 if os.path.exists(downloader):
-    os.system(f"python {downloader}")
+    subprocess.run([sys.executable, downloader], check=False)
 
-from constants import *
+from constants import FPS
 from game import Game
 
 pygame.init()
 clock = pygame.time.Clock()
-Win = pygame.display.set_mode((480, 960))
+win = pygame.display.set_mode((480, 960))
+
 
 def main() -> None:
     run = True
     game_over = False
-    game = Game(Width, Height, Rows, Cols, Square, Win)
+    game = Game(win)
 
     while run:
         clock.tick(FPS)
