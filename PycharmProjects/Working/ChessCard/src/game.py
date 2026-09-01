@@ -1,3 +1,4 @@
+import datetime
 from typing import Any, Optional
 
 from constants import *
@@ -334,3 +335,42 @@ class Game:
 
     def get_board(self) -> NewBoard:
         return self.Board
+
+    def get_pgn(self, result: str = "*") -> str:
+        """Génère la chaîne de caractères au format PGN standard."""
+        today = datetime.date.today().strftime("%Y.%m.%d")
+
+        headers = [
+            '[Event "Casual Game"]',
+            '[Site "Pygame Chess"]',
+            f'[Date "{today}"]',
+            '[Round "1"]',
+            '[White "White"]',
+            '[Black "Black"]',
+            f'[Result "{result}"]',
+            ""  # Ligne vide obligatoire entre les en-têtes et les coups
+        ]
+
+        moves_list = []
+        for turn_num in sorted(self.past_moves_code.keys()):
+            moves = self.past_moves_code[turn_num]
+            if len(moves) == 1:
+                moves_list.append(f"{turn_num}. {moves[0]}")
+            elif len(moves) == 2:
+                moves_list.append(f"{turn_num}. {moves[0]} {moves[1]}")
+
+        moves_str = " ".join(moves_list)
+        if moves_str:
+            moves_str += f" {result}"
+        else:
+            moves_str = result
+
+        return "\n".join(headers) + moves_str
+
+    def export_to_pgn(self, filepath: str = "game.pgn", result: str = "*") -> str:
+        pgn_content = self.get_pgn(result)
+        # Mode "a" pour ajouter à la suite sans écraser
+        with open(filepath, "a", encoding="utf-8") as f:
+            f.write(pgn_content + "\n\n")
+        print(f"Partie ajoutée au PGN : {filepath}")
+        return pgn_content
